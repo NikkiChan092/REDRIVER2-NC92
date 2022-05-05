@@ -39,7 +39,6 @@ struct plotCarGlobals
 	int shineyY;
 	int dir;
 };
-
 int gCarLODDistance = 10000; // initalized default
 int gCarReflectionMapping = 0;
 
@@ -242,7 +241,6 @@ void plotCarPolyFT3Reflection(int numTris, CAR_POLY* src, SVECTOR* vlist, plotCa
 		src++;
 	}
 }
-
 
 // [D] [T]
 void plotCarPolyB3(int numTris, CAR_POLY *src, SVECTOR *vlist, plotCarGlobals *pg)
@@ -1657,7 +1655,9 @@ void DrawCar(CAR_DATA* cp, int view)
 		if (doSmoke && WheelSpeed + 399999U < 1199999)
 			AddSmokingEngine(cp, doSmoke - 1, WheelSpeed);
 
+#if ENABLE_GAME_ENCHANCEMENTS
 		AddExhaustSmoke(cp, doSmoke > 1, WheelSpeed);
+#endif
 
 		SetShadowPoints(cp, corners);
 		PlaceShadowForCar(corners, 4, 10, yVal < 0 ? 0 : 2);
