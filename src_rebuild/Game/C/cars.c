@@ -153,7 +153,7 @@ void SetCarReflection(int enabled, plotCarGlobals* pg, int otOfs)
 
 	DR_PSYX_TEX* tex = (DR_PSYX_TEX*)pg->primptr;
 	if (enabled)
-		SetPsyXTexture(tex, gCarReflectionTexture, 320, 320);
+		SetPsyXTexture(tex, gCarReflectionTexture, 256, 256);
 	else
 		SetPsyXTexture(tex, 0, 0, 0);
 
@@ -219,13 +219,13 @@ void plotCarPolyFT3Reflection(int numTris, CAR_POLY* src, SVECTOR* vlist, plotCa
 
 			*(uint*)&prim->r0 = 0x202020;
 
-			prim->u0 = 320 + (FIXEDH(v0->vx * cs) + FIXEDH(v0->vz * sn) >> 2) - (pg->shineyX & 32);
-			prim->u1 = 320 + (FIXEDH(v1->vx * cs) + FIXEDH(v1->vz * sn) >> 2) - (pg->shineyX & 32);
-			prim->u2 = 320 + (FIXEDH(v2->vx * cs) + FIXEDH(v2->vz * sn) >> 2) - (pg->shineyX & 32);
+			prim->u0 = 256 + (FIXEDH(v0->vx * cs) + FIXEDH(v0->vz * sn) >> 3) - (pg->shineyX & 32);
+			prim->u1 = 256 + (FIXEDH(v1->vx * cs) + FIXEDH(v1->vz * sn) >> 3) - (pg->shineyX & 32);
+			prim->u2 = 256 + (FIXEDH(v2->vx * cs) + FIXEDH(v2->vz * sn) >> 3) - (pg->shineyX & 32);
 
-			prim->v0 = 320 + (FIXEDH(v0->vx * sn) - FIXEDH(v0->vz * cs) >> 2) + (pg->shineyY & 32);
-			prim->v1 = 320 + (FIXEDH(v1->vx * sn) - FIXEDH(v1->vz * cs) >> 2) + (pg->shineyY & 32);
-			prim->v2 = 320 + (FIXEDH(v2->vx * sn) - FIXEDH(v2->vz * cs) >> 2) + (pg->shineyY & 32);
+			prim->v0 = 256 + (FIXEDH(v0->vx * sn) - FIXEDH(v0->vz * cs) >> 3) + (pg->shineyY & 32);
+			prim->v1 = 256 + (FIXEDH(v1->vx * sn) - FIXEDH(v1->vz * cs) >> 3) + (pg->shineyY & 32);
+			prim->v2 = 256 + (FIXEDH(v2->vx * sn) - FIXEDH(v2->vz * cs) >> 3) + (pg->shineyY & 32);
 
 			prim->tpage = 0x20;
 
