@@ -37,6 +37,7 @@ struct plotCarGlobals
 	u_char* damageLevel;
 	int shineyX;
 	int shineyY;
+	int shineyZ; 
 	int dir;
 };
 int gCarLODDistance = 10000; // initalized default

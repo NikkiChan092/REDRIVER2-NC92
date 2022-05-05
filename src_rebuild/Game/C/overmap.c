@@ -733,11 +733,15 @@ void CopIndicator(CAR_DATA *cp, int xpos, int strength)
 		{
 			strf1 = CameraCnt << 5 & strength;
 			strf2 = ~(strf1 & 0xFF);
+			poly->r0 = strf1;
+			poly->b0 = strf2;
 		}
 		else
 		{
 			strf2 = CameraCnt << 5 & strength;
 			strf1 = ~(strf2 & 0xFF);
+			poly->r0 = strf1;
+			poly->b0 = strf2;
 		}
 
 	poly->b0 = strf2;
@@ -1253,9 +1257,8 @@ void DrawOverheadMap(void)
 	else
 	{
 		DrawTargetBlip((VECTOR*)player->pos, 64, 64, 64, 3); // the playerDot shadow
+		DrawCompass(); // Compass should now appear only in single player
 	}
-	
-	DrawCompass();
 
 	DrawOverheadTargets();
 
