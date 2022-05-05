@@ -315,11 +315,11 @@ void DrawPlayerDot(VECTOR *pos, short rot, u_char r, u_char g, u_char b, int fla
 		{
 			WorldToOverheadMapPositions(pos, &vec, 1, 0, 0);
 			
-			if (vec.vx - 233U > 94)
+			/*if (vec.vx - 233U > 94)
 				return;
 
 			if (vec.vz < 174 || vec.vz > 250)
-				return;
+				return;*/
 		}
 		else
 		{
@@ -701,6 +701,8 @@ void CopIndicator(CAR_DATA *cp, int xpos, int strength)
 	int startH, endH;
 	int str2;
 	POLY_F3 *poly;
+	int strf1;
+	int strf2;
 
 	startH = SCREEN_H;
 	endH = SCREEN_H - 30;
@@ -727,21 +729,22 @@ void CopIndicator(CAR_DATA *cp, int xpos, int strength)
 	poly->y2 = startH;
 
 	if (gColorCodedCopIndicators == 1 && MissionHeader->residentModels[cp->ap.model] == 0)
-	{
-		poly->b0 = strength;
+		if ((CameraCnt << 5 & 0x100) == 0)
+		{
+			strf1 = CameraCnt << 5 & strength;
+			strf2 = ~(strf1 & 0xFF);
+		}
+		else
+		{
+			strf2 = CameraCnt << 5 & strength;
+			strf1 = ~(strf2 & 0xFF);
+		}
 
-		str2 = (strength >> 2);
+	poly->b0 = strf2;
 
-		poly->r0 = str2;
-	}
-	else
-	{
-		poly->r0 = strength;
+	str2 = (strength >> 2);
 
-		str2 = (strength >> 2);
-
-		poly->b0 = str2;
-	}
+	poly->r0 = strf1;
 
 	addPrim(current->ot + 1, poly);
 	current->primptr += sizeof(POLY_F3);
@@ -1216,9 +1219,9 @@ void DrawOverheadMap(void)
 			pl->pos[0];
 			pl2->pos[2];
 
-			//WorldToOverheadMapPositions((VECTOR*)&player[0].pos, &vec, 1, 0, 0); // player1
-
-			//WorldToOverheadMapPositions((VECTOR*)&player[1].pos, &vec2, 1, 0, 0); // player2
+			// [D] [T] Give players the MP indicators. 
+			DrawPlayerDot((VECTOR*)pl->pos, -pl->dir, 255, 0, 0, 0x1);
+			DrawPlayerDot((VECTOR*)pl2->pos, -pl2->dir, 0, 255, 0, 0x1);
 	}
 	else
 	{
@@ -1245,14 +1248,7 @@ void DrawOverheadMap(void)
 
 	if (NumPlayers == 2 && gMultiplayerLevels == 0)
 	{
-			pl = &player[0];
-			pl2 = &player[1];
-
-			pl->pos[0];
-			pl2->pos[2];
-
-			DrawTargetBlip((VECTOR*)pl->pos, 0, 255, 255, 3);
-			DrawTargetBlip((VECTOR*)pl2->pos, 255, 64, 128, 3);
+			//do nothing
 	}
 	else
 	{
