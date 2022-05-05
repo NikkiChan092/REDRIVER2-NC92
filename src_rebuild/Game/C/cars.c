@@ -35,6 +35,9 @@ struct plotCarGlobals
 	u_int intensity;
 	u_short* pciv_clut;
 	u_char* damageLevel;
+	int shineyX;
+	int shineyY;
+	int dir;
 };
 
 int gCarLODDistance = 10000; // initalized default
@@ -151,7 +154,7 @@ void SetCarReflection(int enabled, plotCarGlobals* pg, int otOfs)
 
 	DR_PSYX_TEX* tex = (DR_PSYX_TEX*)pg->primptr;
 	if (enabled)
-		SetPsyXTexture(tex, gCarReflectionTexture, 640, 640);
+		SetPsyXTexture(tex, gCarReflectionTexture, 320, 320);
 	else
 		SetPsyXTexture(tex, 0, 0, 0);
 
@@ -160,7 +163,7 @@ void SetCarReflection(int enabled, plotCarGlobals* pg, int otOfs)
 }
 
 // [D] [T]
-void plotCarPolyFT3Reflection(CAR_DATA *cp,int numTris, CAR_POLY* src, SVECTOR* vlist, plotCarGlobals* pg)
+void plotCarPolyFT3Reflection(int numTris, CAR_POLY* src, SVECTOR* vlist, plotCarGlobals* pg)
 {
 	int indices;
 	int ofse;
@@ -172,20 +175,16 @@ void plotCarPolyFT3Reflection(CAR_DATA *cp,int numTris, CAR_POLY* src, SVECTOR* 
 	OTTYPE* ot;
 	int FT3rgb;
 	int reg;
-	SVECTOR direction;
-	int i; 
-	VECTOR* carPos;
-	//int reflectionSpeed; 
+	int sn, cs;
 
-	cp = &car_data[i];
-	carPos = (VECTOR*)cp->hd.direction;
-
-	//reflectionSpeed = cp->hd.where.t[0] & cp->hd.wheel_speed; // was testing an idea earlier. 
+	sn = rsin(pg->dir);
+	cs = rcos(pg->dir);
 
 	FT3rgb = pg->intensity | 0x24000000;
 	ot = pg->ot;
 
 	gte_ldrgb(&FT3rgb);
+
 
 	while (numTris > 0)
 	{
@@ -221,16 +220,13 @@ void plotCarPolyFT3Reflection(CAR_DATA *cp,int numTris, CAR_POLY* src, SVECTOR* 
 
 			*(uint*)&prim->r0 = 0x202020;
 
-			*(u_int*)&prim->u0 = src->clut_uv0;
-			*(u_int*)&prim->u1 = src->tpage_uv1;
-			*(u_int*)&prim->u2 = src->uv3_uv2;
-			// Handles reflection movement
-			prim->u0 += cp->hd.where.t[0];
-			prim->u1 += cp->hd.where.t[0];
-			prim->u2 += cp->hd.where.t[0];
-			prim->v0 += cp->hd.where.t[2];
-			prim->v1 += cp->hd.where.t[2];
-			prim->v2 += cp->hd.where.t[2];
+			prim->u0 = 320 + (FIXEDH(v0->vx * cs) + FIXEDH(v0->vz * sn) >> 2) - (pg->shineyX & 32);
+			prim->u1 = 320 + (FIXEDH(v1->vx * cs) + FIXEDH(v1->vz * sn) >> 2) - (pg->shineyX & 32);
+			prim->u2 = 320 + (FIXEDH(v2->vx * cs) + FIXEDH(v2->vz * sn) >> 2) - (pg->shineyX & 32);
+
+			prim->v0 = 320 + (FIXEDH(v0->vx * sn) - FIXEDH(v0->vz * cs) >> 2) + (pg->shineyY & 32);
+			prim->v1 = 320 + (FIXEDH(v1->vx * sn) - FIXEDH(v1->vz * cs) >> 2) + (pg->shineyY & 32);
+			prim->v2 = 320 + (FIXEDH(v2->vx * sn) - FIXEDH(v2->vz * cs) >> 2) + (pg->shineyY & 32);
 
 			prim->tpage = 0x20;
 
@@ -246,6 +242,7 @@ void plotCarPolyFT3Reflection(CAR_DATA *cp,int numTris, CAR_POLY* src, SVECTOR* 
 		src++;
 	}
 }
+
 
 // [D] [T]
 void plotCarPolyB3(int numTris, CAR_POLY *src, SVECTOR *vlist, plotCarGlobals *pg)
@@ -1092,7 +1089,7 @@ void plotNewCarModel(CAR_MODEL* car, CAR_DATA* cp, int palette)
 	if (gCarReflectionMapping == 1)
 	{
 		_pg.ot = (OTTYPE*)(current->ot - 4);
-		plotCarPolyFT3Reflection(cp, car->numGT3, car->pGT3, car->vlist, &_pg);
+		plotCarPolyFT3Reflection(car->numGT3, car->pGT3, car->vlist, &_pg);
 	}
 
 	current->primptr = (char*)_pg.primptr;
