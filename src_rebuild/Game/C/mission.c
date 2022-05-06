@@ -497,6 +497,528 @@ void LoadMission(int missionnum)
 		PlayerStartInfo[0]->palette = MissionHeader->playerCarColour;
 	}
 
+	//----------------------------------------------------------------------------------
+	// [A] Add spawns for player 2 and cars for them to use or get chased by
+	if (NumPlayers == 2)
+	{
+		//Undercover
+		//Chicago
+		if (gCurrentMissionNumber == 1) // Surveillance tip off
+		{
+			PlayerStartInfo[1]->rotation = 1280;
+			PlayerStartInfo[1]->position.vx = 14511;
+			PlayerStartInfo[1]->position.vz = 142120;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 2) // Chase the witness
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 4294788096;
+			PlayerStartInfo[1]->position.vz = 523400;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 5;
+		}
+		else if (gCurrentMissionNumber == 3) // Train pursuit
+		{
+			PlayerStartInfo[1]->rotation = 1024;
+			PlayerStartInfo[1]->position.vx = 4294789120;
+			PlayerStartInfo[1]->position.vz = 282368;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 5;
+		}
+		else if (gCurrentMissionNumber == 4) // Tailing the drop
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 4294883824;
+			PlayerStartInfo[1]->position.vz = 4294654026;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 5;
+		}
+		else if (gCurrentMissionNumber == 5) // Escape to the safehouse
+		{
+			PlayerStartInfo[1]->rotation = 1024;
+			PlayerStartInfo[1]->position.vx = 4294763401;
+			PlayerStartInfo[1]->position.vz = 4294617568;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 5;
+		}
+		else if (gCurrentMissionNumber == 6) // Chase the intruder
+		{
+			PlayerStartInfo[1]->rotation = 3840;
+			PlayerStartInfo[1]->position.vx = 18575;
+			PlayerStartInfo[1]->position.vz = 140082;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 7) // Caine's compound
+		{
+			PlayerStartInfo[1]->rotation = 2816;
+			PlayerStartInfo[1]->position.vx = 4294673410;
+			PlayerStartInfo[1]->position.vz = 318938;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 9) // Leaving Chicago
+		{
+			PlayerStartInfo[1]->rotation = 256;
+			PlayerStartInfo[1]->position.vx = 4294540392;
+			PlayerStartInfo[1]->position.vz = 339776;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 1;
+		}
+
+		//Havana
+		else if (gCurrentMissionNumber == 10) // Follow up the lead
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 317572;
+			PlayerStartInfo[1]->position.vz = 4294936845;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 2;
+		}
+		else if (gCurrentMissionNumber == 11) // Hijack the truck
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 33520;
+			PlayerStartInfo[1]->position.vz = 4294942208;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 2;
+		}
+		else if (gCurrentMissionNumber == 13) // Stop the truck
+		{
+			PlayerStartInfo[1]->rotation = 512;
+			PlayerStartInfo[1]->position.vx = 420326;
+			PlayerStartInfo[1]->position.vz = 4294854597;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 1;
+		}
+		else if (gCurrentMissionNumber == 14) // Find the clue
+		{
+			PlayerStartInfo[1]->rotation = 256;
+			PlayerStartInfo[1]->position.vx = 4294758018;
+			PlayerStartInfo[1]->position.vz = 4294733839;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 15) // Escape to ferry
+		{
+			PlayerStartInfo[1]->rotation = 1792;
+			PlayerStartInfo[1]->position.vx = 246308;
+			PlayerStartInfo[1]->position.vz = 21082;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 2;
+		}
+		else if (gCurrentMissionNumber == 16) // To the docks
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 316160;
+			PlayerStartInfo[1]->position.vz = 130228;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 5;
+		}
+		else if (gCurrentMissionNumber == 17) // Back to Jones
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 335943;
+			PlayerStartInfo[1]->position.vz = 4294609089;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 18) // Tail Jericho
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 417254;
+			PlayerStartInfo[1]->position.vz = 4294853248;
+			PlayerStartInfo[1]->model = 3;
+		}
+		else if (gCurrentMissionNumber == 19) // Pursue Jericho
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 362267;
+			PlayerStartInfo[1]->position.vz = 4294921364;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 20) // Escape the Brazillians
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 230624;
+			PlayerStartInfo[1]->position.vz = 4294914816;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 3;
+		}
+
+		//Las Vegas
+		else if (gCurrentMissionNumber == 21) // Casino getaway
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 4294911176;
+			PlayerStartInfo[1]->position.vz = 384351;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 22) // Beat the train
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 4294903488;
+			PlayerStartInfo[1]->position.vz = 972032;
+			PlayerStartInfo[1]->model = 4;
+			PlayerStartInfo[1]->palette = 5;
+		}
+		else if (gCurrentMissionNumber == 23) // Car bomb
+		{
+			PlayerStartInfo[1]->rotation = 1024;
+			PlayerStartInfo[1]->position.vx = 4294801251;
+			PlayerStartInfo[1]->position.vz = 643581;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 24) // Car bomb getaway
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 4294929920;
+			PlayerStartInfo[1]->position.vz = 267729;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 25) // Bank job
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 4294861920;
+			PlayerStartInfo[1]->position.vz = 4294751353;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 26) // Steal the ambulance
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 130016;
+			PlayerStartInfo[1]->position.vz = 6327;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 3;
+		}
+		else if (gCurrentMissionNumber == 27) // Steak out
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 48139;
+			PlayerStartInfo[1]->position.vz = 432863;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 2;
+		}
+		else if (gCurrentMissionNumber == 28) // Steal the keys
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 143370;
+			PlayerStartInfo[1]->position.vz = 4294837420;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 29) // C4 deal
+		{
+			PlayerStartInfo[1]->rotation = 3584;
+			PlayerStartInfo[1]->position.vx = 4294893961;
+			PlayerStartInfo[1]->position.vz = 227982;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 30) // Destroy the yard
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 159776;
+			PlayerStartInfo[1]->position.vz = 730994;
+			PlayerStartInfo[1]->type = 2;
+		}
+
+		// Rio
+		else if (gCurrentMissionNumber == 31) // Bus crush
+		{
+			PlayerStartInfo[1]->rotation = 1792;
+			PlayerStartInfo[1]->position.vx = 4294834604;
+			PlayerStartInfo[1]->position.vz = 4294893047;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 32) // Steal the cop car
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 78742;
+			PlayerStartInfo[1]->position.vz = 4294798722;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 4;
+		}
+		else if (gCurrentMissionNumber == 33) // Caine's cash
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 174325;
+			PlayerStartInfo[1]->position.vz = 246079;
+		}
+		else if (gCurrentMissionNumber == 34) // Save Jones
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 4294722139;
+			PlayerStartInfo[1]->position.vz = 4294553500;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 35) // Boat jump
+		{
+			PlayerStartInfo[1]->rotation = 256;
+			PlayerStartInfo[1]->position.vx = 232328;
+			PlayerStartInfo[1]->position.vz = 4294813696;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 37) // Jones in trouble
+		{
+			PlayerStartInfo[1]->rotation = 256;
+			PlayerStartInfo[1]->position.vx = 4294760225;
+			PlayerStartInfo[1]->position.vz = 4294475644;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 4;
+		}
+		else if (gCurrentMissionNumber == 38) // Chase the gunman
+		{
+			PlayerStartInfo[1]->rotation = 2304;
+			PlayerStartInfo[1]->position.vx = 4294867596;
+			PlayerStartInfo[1]->position.vz = 91846;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 39) // Lenny escaping
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 4294837576;
+			PlayerStartInfo[1]->position.vz = 4294911531;
+			PlayerStartInfo[1]->type = 2;
+		}
+		else if (gCurrentMissionNumber == 40) // Lenny gets caught
+		{
+			PlayerStartInfo[1]->rotation = 2816;
+			PlayerStartInfo[1]->position.vx = 66946;
+			PlayerStartInfo[1]->position.vz = 4294448896;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 2;
+		}
+
+		// Take a Ride
+		else if (gCurrentMissionNumber == 50 || gCurrentMissionNumber == 51) // Chicago Take a Ride
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 5383;
+			PlayerStartInfo[1]->position.vz = 4294744840;
+			PlayerStartInfo[1]->palette = 1;
+		}
+		else if (gCurrentMissionNumber == 52 || gCurrentMissionNumber == 53) // Havana Take a Ride
+		{
+			PlayerStartInfo[1]->rotation = 1024;
+			PlayerStartInfo[1]->position.vx = 4294728628;
+			PlayerStartInfo[1]->position.vz = 4294730927;
+			PlayerStartInfo[1]->palette = 2;
+		}
+		else if (gCurrentMissionNumber == 54) // Las Vegas Day Take a Ride
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 142405;
+			PlayerStartInfo[1]->position.vz = 621193;
+		}
+		else if (gCurrentMissionNumber == 55) // Las Vegas Night Take a Ride
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 143093;
+			PlayerStartInfo[1]->position.vz = 621049;
+		}
+		else if (gCurrentMissionNumber == 56 || gCurrentMissionNumber == 57) // Rio Take a Ride
+		{
+			PlayerStartInfo[1]->rotation = 1024;
+			PlayerStartInfo[1]->position.vx = 24453;
+			PlayerStartInfo[1]->position.vz = 4294470527;
+		}
+
+		// Driving Games
+		//Quick Chase
+		else if (gCurrentMissionNumber == 70) // Chicago
+		{
+			PlayerStartInfo[1]->rotation = 512;
+			PlayerStartInfo[1]->position.vx = 4294864700;
+			PlayerStartInfo[1]->position.vz = 31470;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 3;
+		}
+		else if (gCurrentMissionNumber == 78) // Havana
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 4309;
+			PlayerStartInfo[1]->position.vz = 4294741465;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 2;
+		}
+		else if (gCurrentMissionNumber == 86) // Las Vegas
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 4294874389;
+			PlayerStartInfo[1]->position.vz = 373823;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 3;
+		}
+		else if (gCurrentMissionNumber == 94) // Rio
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 206060;
+			PlayerStartInfo[1]->position.vz = 237574;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 2;
+		}
+
+		//Quick Getaway
+		else if (gCurrentMissionNumber == 102) // Chicago Downtown
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 4294926091;
+			PlayerStartInfo[1]->position.vz = 4294924314;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 4;
+		}
+		else if (gCurrentMissionNumber == 103) // Chicago Wrigleyville
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 4294738829;
+			PlayerStartInfo[1]->position.vz = 607973;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 3;
+		}
+		else if (gCurrentMissionNumber == 110) // Havana Necropolis de Colon
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 4294734688;
+			PlayerStartInfo[1]->position.vz = 4294744524;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 5;
+		}
+		else if (gCurrentMissionNumber == 111) // Havana Capitolio
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 238380;
+			PlayerStartInfo[1]->position.vz = 4294843599;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 5;
+		}
+		else if (gCurrentMissionNumber == 118) // Las Vegas Downtown
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 216336;
+			PlayerStartInfo[1]->position.vz = 704353;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 2;
+		}
+		else if (gCurrentMissionNumber == 119) // Las Vegas Upper Strip
+		{
+			PlayerStartInfo[1]->rotation = 2560;
+			PlayerStartInfo[1]->position.vx = 4294913773;
+			PlayerStartInfo[1]->position.vz = 411749;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 3;
+		}
+		else if (gCurrentMissionNumber == 126) // Rio Centro
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 192095;
+			PlayerStartInfo[1]->position.vz = 262921;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 1;
+		}
+		else if (gCurrentMissionNumber == 127) // Rio Copacabana
+		{
+			PlayerStartInfo[1]->rotation = 768;
+			PlayerStartInfo[1]->position.vx = 85325;
+			PlayerStartInfo[1]->position.vz = 4294626652;
+			PlayerStartInfo[1]->model = 3;
+		}
+
+		//Gate Racing
+		else if (gCurrentMissionNumber == 134) // Chicago Greek Town
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 4294653600;
+			PlayerStartInfo[1]->position.vz = 4294853834;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 5;
+		}
+		else if (gCurrentMissionNumber == 135) // Chicago Grant Park
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 41344;
+			PlayerStartInfo[1]->position.vz = 4294893944;
+			PlayerStartInfo[1]->model = 3;
+			PlayerStartInfo[1]->palette = 1;
+		}
+		else if (gCurrentMissionNumber == 142) // Havana Necropolis de Colon
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 4294872966;
+			PlayerStartInfo[1]->position.vz = 4294794585;
+			PlayerStartInfo[1]->model = 3;
+			PlayerStartInfo[1]->palette = 2;
+		}
+		else if (gCurrentMissionNumber == 143) // Havana Old Havana
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 409522;
+			PlayerStartInfo[1]->position.vz = 4294936435;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 2;
+		}
+		else if (gCurrentMissionNumber == 150) // Las Vegas Lakeside
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 4294849113;
+			PlayerStartInfo[1]->position.vz = 580298;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 1;
+		}
+		else if (gCurrentMissionNumber == 151) // Las Vegas Mid Strip
+		{
+			PlayerStartInfo[1]->rotation = 3072;
+			PlayerStartInfo[1]->position.vx = 123642;
+			PlayerStartInfo[1]->position.vz = 323279;
+			PlayerStartInfo[1]->model = 3;
+			PlayerStartInfo[1]->palette = 1;
+		}
+		else if (gCurrentMissionNumber == 158) // Rio Copacabana
+		{
+			PlayerStartInfo[1]->rotation = 2048;
+			PlayerStartInfo[1]->position.vx = 134364;
+			PlayerStartInfo[1]->position.vz = 4294680415;
+			PlayerStartInfo[1]->model = 1;
+		}
+		else if (gCurrentMissionNumber == 159) // Rio Santa Tereza
+		{
+			PlayerStartInfo[1]->rotation = 1024;
+			PlayerStartInfo[1]->position.vx = 4294935284;
+			PlayerStartInfo[1]->position.vz = 384055;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 3;
+		}
+
+		//Survival
+		else if (gCurrentMissionNumber == 292) // Chicago
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 4294590468;
+			PlayerStartInfo[1]->position.vz = 244436;
+			PlayerStartInfo[1]->model = 3;
+		}
+		else if (gCurrentMissionNumber == 300) // Havana
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 3651;
+			PlayerStartInfo[1]->position.vz = 4294692233;
+			PlayerStartInfo[1]->model = 3;
+			PlayerStartInfo[1]->palette = 4;
+		}
+		else if (gCurrentMissionNumber == 308) // Las Vegas
+		{
+			PlayerStartInfo[1]->rotation = 0;
+			PlayerStartInfo[1]->position.vx = 4294905250;
+			PlayerStartInfo[1]->position.vz = 65663;
+			PlayerStartInfo[1]->model = 2;
+			PlayerStartInfo[1]->palette = 1;
+		}
+		else if (gCurrentMissionNumber == 316) // Rio
+		{
+			PlayerStartInfo[1]->rotation = 3584;
+			PlayerStartInfo[1]->position.vx = 219256;
+			PlayerStartInfo[1]->position.vz = 121695;
+			PlayerStartInfo[1]->model = 1;
+			PlayerStartInfo[1]->palette = 4;
+		}
+	}
+	//-----------------------------------------------------------------------------------
+
 	if (MissionHeader->maxDamage != 0) 
 	{
 		MaxPlayerDamage[1] = MissionHeader->maxDamage;
@@ -567,8 +1089,16 @@ void LoadMission(int missionnum)
 
 		for (int i = 0; i < NumPlayers; i++)
 		{
-			Mission.timer[i].flags = flag;
-			Mission.timer[i].count = MissionHeader->timer * 3000;
+			if (NumPlayers == 2 && GameType == GAME_MISSION || GAME_PURSUIT)
+			{
+				Mission.timer[0].flags = flag;
+				Mission.timer[0].count = MissionHeader->timer * 3000;
+			}
+			else
+			{
+				Mission.timer[i].flags = flag;
+				Mission.timer[i].count = MissionHeader->timer * 3000;
+			}
 		}
 	}
 

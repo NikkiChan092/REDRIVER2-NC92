@@ -24,6 +24,7 @@ void DrawTimer(MR_TIMER* timer)
 	short digit_pos;
 	char string[16];
 
+	//Timer for MP [D] [T]
 	if ((timer->flags & TIMER_FLAG_ACTIVE) && !(timer->flags & TIMER_FLAG_BOMB_TRIGGERED))
 	{
 		if (NumPlayers == 1)

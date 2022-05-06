@@ -446,6 +446,7 @@ void LoadMapTile(int tpage, int x, int y)
 #endif
 }
 
+
 // [D] [T]
 void SetMapPos(void)
 {
@@ -454,12 +455,10 @@ void SetMapPos(void)
 	scale = overlaidmaps[GameLevel].scale;
 
 	// [D] [T] 
-	if (NumPlayers == 1)
-	{
-		x_map = overlaidmaps[GameLevel].x_offset + player[0].pos[0] / scale + 1;
-		y_map = overlaidmaps[GameLevel].y_offset - player[0].pos[2] / scale + 1;
-	}
-	else
+	x_map = overlaidmaps[GameLevel].x_offset + player[0].pos[0] / scale + 1;
+	y_map = overlaidmaps[GameLevel].y_offset - player[0].pos[2] / scale + 1;
+	
+	if (NumPlayers == 2)
 	{
 		int pPosAvgX = (player[0].pos[0] + player[1].pos[0]) / 2;
 		int pPosAvgZ = (player[0].pos[2] + player[1].pos[2]) / 2;
@@ -1994,9 +1993,11 @@ void WorldToOverheadMapPositions(VECTOR *pGlobalPosition, VECTOR *pOverheadMapPo
 
 	// [D] [T] 
 	
-	if (NumPlayers != 1)
+	if (NumPlayers == 2)
+	{
 		playerPos.x = (player[0].pos[0] + player[1].pos[0]) / 2;
 		playerPos.z = (player[0].pos[2] + player[1].pos[2]) / 2;
+	}
 
 	count--;
 	while (count >= 0) 
