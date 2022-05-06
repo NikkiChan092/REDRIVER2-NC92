@@ -91,7 +91,7 @@ static int gUseRotatedMap = 0;
 int gMapXOffset = 640;
 int gMapYOffset = 480;
 
-int gColorCodedCopIndicators = 1;
+int gColorCodedCopIndicators = 0;
 
 void WorldToOverheadMapPositions(VECTOR * pGlobalPosition, VECTOR * pOverheadMapPosition, int count, char inputRelative, int outputRelative);
 void WorldToMultiplayerMap(VECTOR * in, VECTOR * out);
@@ -716,6 +716,13 @@ void CopIndicator(CAR_DATA *cp, int xpos, int strength)
 
 	startH = SCREEN_H;
 	endH = SCREEN_H - 30;
+
+	//Cop indicator on player 1 screen in split screen:
+	if (NumPlayers != 1)
+	{
+		startH = SCREEN_H / 2;
+		endH = SCREEN_H / 2 - 15;
+	}
 
 	if (strength > 255)
 		strength = 255;
