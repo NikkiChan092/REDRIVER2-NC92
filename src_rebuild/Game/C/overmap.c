@@ -453,8 +453,19 @@ void SetMapPos(void)
 
 	scale = overlaidmaps[GameLevel].scale;
 
-	x_map = overlaidmaps[GameLevel].x_offset + player[0].pos[0] / scale + 1;
-	y_map = overlaidmaps[GameLevel].y_offset - player[0].pos[2] / scale + 1;
+	// [D] [T] 
+	if (NumPlayers == 1)
+	{
+		x_map = overlaidmaps[GameLevel].x_offset + player[0].pos[0] / scale + 1;
+		y_map = overlaidmaps[GameLevel].y_offset - player[0].pos[2] / scale + 1;
+	}
+	else
+	{
+		int pPosAvgX = (player[0].pos[0] + player[1].pos[0]) / 2;
+		int pPosAvgZ = (player[0].pos[2] + player[1].pos[2]) / 2;
+		x_map = overlaidmaps[GameLevel].x_offset + pPosAvgX / scale + 1;
+		y_map = overlaidmaps[GameLevel].y_offset - pPosAvgZ / scale + 1;
+	}
 }
 
 // [D] [T]
@@ -744,11 +755,7 @@ void CopIndicator(CAR_DATA *cp, int xpos, int strength)
 			poly->b0 = strf2;
 		}
 
-	poly->b0 = strf2;
-
 	str2 = (strength >> 2);
-
-	poly->r0 = strf1;
 
 	addPrim(current->ot + 1, poly);
 	current->primptr += sizeof(POLY_F3);
@@ -1129,6 +1136,7 @@ void DrawOverheadMap(void)
 	int MeshWidth, MeshHeight;
 	int map_minX, map_maxX;
 	int map_minY, map_maxY;
+	int scale;
 
 	PLAYER* pl;
 	PLAYER* pl2;
@@ -1396,6 +1404,8 @@ void DrawOverheadMap(void)
 
 	gte_SetRotMatrix(&map_matrix);
 	gte_SetTransVector(&translate);
+
+	
 
 	MeshWidth = x_mod ? 4 : 3;
 	MeshHeight = y_mod ? 4 : 3;
@@ -1981,6 +1991,12 @@ void WorldToOverheadMapPositions(VECTOR *pGlobalPosition, VECTOR *pOverheadMapPo
 
 	playerPos2.x = player[1].pos[0];
 	playerPos2.z = player[1].pos[2];
+
+	// [D] [T] 
+	
+	if (NumPlayers != 1)
+		playerPos.x = (player[0].pos[0] + player[1].pos[0]) / 2;
+		playerPos.z = (player[0].pos[2] + player[1].pos[2]) / 2;
 
 	count--;
 	while (count >= 0) 

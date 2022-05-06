@@ -21,6 +21,7 @@ Cheats from cheat engine that need to be ported to RE:DRIVER 2:
 [x] Original Headlights
 [x] Speedometer
 [x] Gear Indicator
+[x] Center minimap between both players in multiplayer big maps.
 [ ] Manual Transmision (Optional)
 
 Shit that needs to be restored from Driver 1 

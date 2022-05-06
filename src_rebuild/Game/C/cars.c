@@ -220,13 +220,13 @@ void plotCarPolyFT3Reflection(int numTris, CAR_POLY* src, SVECTOR* vlist, plotCa
 
 			*(uint*)&prim->r0 = 0x202020;
 
-			prim->u0 = 128 + (FIXEDH(v0->vx * cs) + FIXEDH(v0->vz * sn) >> 3) - (pg->shineyX & 63);
-			prim->u1 = 128 + (FIXEDH(v1->vx * cs) + FIXEDH(v1->vz * sn) >> 3) - (pg->shineyX & 63);
-			prim->u2 = 128 + (FIXEDH(v2->vx * cs) + FIXEDH(v2->vz * sn) >> 3) - (pg->shineyX & 63);
+			prim->u0 = 128 + (FIXEDH(v0->vx * cs) + FIXEDH(v0->vz * sn) >> 3) - (pg->shineyX & 100);
+			prim->u1 = 128 + (FIXEDH(v1->vx * cs) + FIXEDH(v1->vz * sn) >> 3) - (pg->shineyX & 100);
+			prim->u2 = 128 + (FIXEDH(v2->vx * cs) + FIXEDH(v2->vz * sn) >> 3) - (pg->shineyX & 100);
 
-			prim->v0 = 128 + (FIXEDH(v0->vx * sn) - FIXEDH(v0->vz * cs) >> 3) + (pg->shineyY & 63);
-			prim->v1 = 128 + (FIXEDH(v1->vx * sn) - FIXEDH(v1->vz * cs) >> 3) + (pg->shineyY & 63);
-			prim->v2 = 128 + (FIXEDH(v2->vx * sn) - FIXEDH(v2->vz * cs) >> 3) + (pg->shineyY & 63);
+			prim->v0 = 128 + (FIXEDH(v0->vx * sn) - FIXEDH(v0->vz * cs) >> 3) + (pg->shineyY & 100);
+			prim->v1 = 128 + (FIXEDH(v1->vx * sn) - FIXEDH(v1->vz * cs) >> 3) + (pg->shineyY & 100);
+			prim->v2 = 128 + (FIXEDH(v2->vx * sn) - FIXEDH(v2->vz * cs) >> 3) + (pg->shineyY & 100);
 
 			prim->tpage = 0x20;
 
