@@ -125,8 +125,24 @@ void InitCarReflection()
 		int width, height, bpp;
 
 		if (gCarReflectionMapping == 1)
-			sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\HQ\\REFLECTIONS.TGA");
-			//sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\HQ\\REFLECTIONSPC.TGA");
+		{
+			if (gTimeOfDay == TIME_DAWN)
+			{
+				sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\REFLECTIONS\\REFLECTIONS_DAWN.TGA");
+			}
+			else if (gTimeOfDay == TIME_DAY)
+			{
+				sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\REFLECTIONS\\REFLECTIONS_DAY.TGA");
+			}
+			else if (gTimeOfDay == TIME_DUSK)
+			{
+				sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\REFLECTIONS\\REFLECTIONS_DUSK.TGA");
+			}
+			else if (gTimeOfDay == TIME_NIGHT)
+			{
+				sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\REFLECTIONS\\REFLECTIONS_NIGHT.TGA");
+			}
+		}
 
 
 		FS_FixPathSlashes(namebuffer);
