@@ -712,11 +712,11 @@ void DrawGearDisplay(void)
 		int GearDisplay;
 		int GearSpeed;
 
-		int gGearOverlayXPos = gMapXOffset - 18;
-		int gGearOverlayYPos = gMapYOffset + 57;
+		int gGearOverlayXPos = gMapXOffset - 13;
+		int gGearOverlayYPos = gMapYOffset + 45;
 
 		// Multiplayer 
-		int gGearOverlayXPos2 = gMapXOffset - 18;
+		int gGearOverlayXPos2 = gMapXOffset - 13;
 		int gGearOverlayYPos2 = gMapYOffset - 16;
 
 		GearDisplay = cp->hd.gear + 1;
@@ -726,12 +726,12 @@ void DrawGearDisplay(void)
 
 
 		if (GearSpeed < 0)
-			sprintf(gearString, "G:R", gear);
+			sprintf(gearString, "R", gear);
 		else 
 			if (GearSpeed == 0)
-				sprintf(gearString, "G:N", gear);
+				sprintf(gearString, "N", gear);
 			else
-				sprintf(gearString, "G:%d", gear);
+				sprintf(gearString, "%d", gear);
 
 		SetTextColour(128, 128, 64);
 
@@ -759,10 +759,10 @@ void DrawGearDisplay2(void)
 		int GearDisplay;
 		int GearSpeed;
 
-		int gGearOverlay2XPos = gMapXOffset - 18;
+		int gGearOverlay2XPos = gMapXOffset - 13;
 		int gGearOverlay2YPos = gMapYOffset + 134;
 
-		int gGearOverlay2XPos2 = gMapXOffset - 18;
+		int gGearOverlay2XPos2 = gMapXOffset - 13;
 		int gGearOverlay2YPos2 = gMapYOffset + 160;
 
 		GearDisplay = cp->hd.gear + 1;
@@ -772,12 +772,12 @@ void DrawGearDisplay2(void)
 
 
 		if (GearSpeed < 0)
-			sprintf(gearString, "G:R", gear);
+			sprintf(gearString, "R", gear);
 		else
 			if (GearSpeed == 0)
-				sprintf(gearString, "G:N", gear);
+				sprintf(gearString, "N", gear);
 			else
-				sprintf(gearString, "G:%d", gear);
+				sprintf(gearString, "%d", gear);
 
 		SetTextColour(128, 128, 64);
 
@@ -806,16 +806,16 @@ void DrawRPMDisplay(void)
 		int RPMMax;
 		int RPMDisplay;
 
-		int gRPMOverlayXPos = gMapXOffset - 90;
+		int gRPMOverlayXPos = gMapXOffset - 65;
 		int gRPMOverlayYPos = gMapYOffset + 57;
 
-		RPMMax = cp->hd.revs / 4;
-		RPMMin = 800;
+		RPMMax = cp->hd.revs / 3.5;
+		RPMMin = 600;
 		RPMDisplay = RPMMin + RPMMax; 
 
 		int RPM = RPMDisplay;
 		
-		sprintf(RPMString, "RPM:%d", RPM);
+		sprintf(RPMString, "%d:Rpm", RPM);
 
 		SetTextColour(128, 128, 64);
 
@@ -851,11 +851,11 @@ void DrawSpeedometer(void)
 		int WheelSpeed;
 
 		// Singleplayer
-		int gSpeedoOverlayXPos = gMapXOffset + 12;
+		int gSpeedoOverlayXPos = gMapXOffset + 7;
 		int gSpeedoOverlayYPos = gMapYOffset + 57;
 
 		// Multiplayer 
-		int gSpeedoOverlayXPos2 = gMapXOffset + 12;
+		int gSpeedoOverlayXPos2 = gMapXOffset + 7;
 		int gSpeedoOverlayYPos2 = gMapYOffset - 16;
 
 		WheelSpeed = cp->hd.wheel_speed;
@@ -866,7 +866,7 @@ void DrawSpeedometer(void)
 
 		if (gSpeedoType == 0) 
 		//if (GameLevel == 1 || GameLevel == 3)
-			sprintf(string, "%d:Kp/h", kph);
+			sprintf(string, "%d:Km/h", kph);
 		else
 			sprintf(string, "%d:Mph", mph);
 
@@ -963,10 +963,10 @@ void DrawSpeedometer2(void)
 		char string[32];
 		int WheelSpeed;
 
-		int gSpeedoOverlayXPos = gMapXOffset + 12;
+		int gSpeedoOverlayXPos = gMapXOffset + 7;
 		int gSpeedoOverlayYPos = gMapYOffset + 134;
 
-		int gSpeedoOverlayXPos2 = gMapXOffset + 12;
+		int gSpeedoOverlayXPos2 = gMapXOffset + 7;
 		int gSpeedoOverlayYPos2 = gMapYOffset + 160;
 
 		WheelSpeed = cp->hd.wheel_speed;
@@ -977,7 +977,7 @@ void DrawSpeedometer2(void)
 
 		if (gSpeedoType == 0)
 			//if (GameLevel == 1 || GameLevel == 3)
-			sprintf(string, "%d:Kp/h", kph);
+			sprintf(string, "%d:Km/h", kph);
 		else
 			sprintf(string, "%d:Mph", mph);
 
