@@ -661,7 +661,7 @@ void DrawDrivingGameOverlays(void)
 		
 			x = PrintString(G_LTXT(GTXT_Flags), gOverlayXPos, 132);
 			sprintf(string, "%d", gPlayerScore.P2items);
-			PrintString(string, x + 3, SCREEN_H / 2 + 4);
+			PrintString(string, x + 3, SCREEN_H / 2 + 12);
 			break;
 		case GAME_SECRET:
 			y = 36;
