@@ -1065,7 +1065,6 @@ void LoadMission(int missionnum)
 	if (NumPlayers == 2 && GameType == GAME_MISSION || NumPlayers == 2 && GameType == GAME_PURSUIT)
 	{
 		Mission.timer[0].y = 106;
-		Mission.timer[1].y = 300;
 	}
 	else
 	{
@@ -1089,7 +1088,7 @@ void LoadMission(int missionnum)
 
 		for (int i = 0; i < NumPlayers; i++)
 		{
-			if (NumPlayers == 2 && GameType == GAME_MISSION || GAME_PURSUIT)
+			if (NumPlayers == 2 && GameType == GAME_MISSION || GameType == GAME_PURSUIT)
 			{
 				Mission.timer[0].flags = flag;
 				Mission.timer[0].count = MissionHeader->timer * 3000;
@@ -3751,15 +3750,7 @@ void HandleMission(void)
 	gTannerActionNeeded = 0;
 
 	HandleTimer(&Mission.timer[0]);
-
-	if (NumPlayers == 2 && gMultiplayerLevels == 0)
-	{
-		//HandleTimer(&Mission.timer[1]);
-	}
-	else
-	{
-		HandleTimer(&Mission.timer[1]);
-	}
+	HandleTimer(&Mission.timer[1]);
 
 	HandleThrownBombs();
 	HandleMissionThreads();

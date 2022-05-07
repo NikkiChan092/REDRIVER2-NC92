@@ -32,7 +32,7 @@ void DrawTimer(MR_TIMER* timer)
 			SetTextColour(128, 128, 128);
 		}
 		else
-			if (NumPlayers == 2 && gMultiplayerLevels == 0)
+			if (NumPlayers == 2 && GameType == GAME_MISSION || GameType == GAME_PURSUIT)
 			{
 				SetTextColour(128, 128, 64);
 			}
