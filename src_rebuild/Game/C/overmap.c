@@ -1570,6 +1570,7 @@ void DrawFullscreenMap(void)
 	VECTOR meshO[4];
 	VECTOR target;
 	VECTOR vec;
+	VECTOR vec2;
 	long flag;
 	int width, height;
 	int ntiles, count;
@@ -1621,7 +1622,8 @@ void DrawFullscreenMap(void)
 	width = overlaidmaps[GameLevel].width;
 	height = overlaidmaps[GameLevel].height;
 
-	WorldToFullscreenMap((VECTOR *)player->pos, &player_position);
+	
+	WorldToFullscreenMap((VECTOR*)player->pos, &player_position);
 
 	// do map movement
 	if (gUseRotatedMap) 
@@ -1851,12 +1853,22 @@ void DrawFullscreenMap(void)
 
 	DrawFullscreenTargets();
 
-	if (gUseRotatedMap)
-		DrawBigCompass(&target, player[0].dir);
-	else 
-		DrawBigCompass(&target, 0);
+	// [D] [T] // Add icons in multiplayer and keep singleplayer as is. 
+	if (NumPlayers == 1)
+	{
+		if (gUseRotatedMap)
+			DrawBigCompass(&target, player[0].dir);
+		else
+			DrawBigCompass(&target, 0);
 
-	DrawTargetBlip(&target, 64, 64, 64, 14);
+		DrawTargetBlip(&target, 64, 64, 64, 14);
+	}
+	else
+		if (NumPlayers == 2)
+	{
+		DrawPlayerDot((VECTOR*)player[0].pos, -player[0].dir, 255, 0, 0, 0x4);
+		DrawPlayerDot((VECTOR*)player[1].pos, -player[1].dir, 0, 255, 0, 0x4);
+	}
 
 	vec.vx = target.vx + map_x_offset;
 	vec.vz = target.vz + map_z_offset;
