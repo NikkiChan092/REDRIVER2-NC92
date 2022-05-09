@@ -9,6 +9,7 @@
 extern int CopsCanSeePlayer;
 extern short pedestrianFelony;
 extern short playerLastRoad; // Needed for speedometer
+extern int SpeedingData;
 
 extern FELONY_DATA felonyData;
 

@@ -2094,6 +2094,11 @@ int MRCommand(MR_THREAD *thread, u_int cmd)
 			pedestrianFelony = val1;
 		else
 			car_data[player[0].playerCarId].felonyRating = val1;
+
+		if (player[1].playerCarId < 0)
+			pedestrianFelony = val1;
+		else
+			car_data[player[1].playerCarId].felonyRating = val1;
 	}
 	else if (cmd == 0x1000050)			// ShowPlayerMessage
 	{
