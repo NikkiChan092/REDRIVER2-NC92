@@ -42,8 +42,6 @@ int FelonyDecreaseTime = 0;
 int FelonyIncreaseTimer = 0;
 int FelonyDecreaseTimer = 0;
 
-int SpeedingData = 0; 
-
 
 // [D] [T]
 void InitFelonyDelayArray(FELONY_DELAY *pFelonyDelay, short *pMaximum, int count)
@@ -412,8 +410,6 @@ void CheckPlayerMiscFelonies(void)
 		limit = (maxSpeed * 19) >> 4;
 	else 
 		limit = (maxSpeed * 3) >> 1;
-
-	SpeedingData = limit; // For the Speedometer. 
 
 	if (FIXEDH(cp->hd.wheel_speed) > limit)
 		NoteFelony(&felonyData, 2, 4096);

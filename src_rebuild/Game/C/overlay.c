@@ -870,10 +870,60 @@ void DrawSpeedometer(void)
 		else
 			sprintf(string, "%d:Mph", mph);
 
+		//Fetch the road speed limits and update. Mostly ported from felony.c. Easier Method? 
+		surfInd = GetSurfaceIndex(carPos);
+
+		// check junctions
+		if (IS_JUNCTION_SURFACE(surfInd))
+		{
+			jn = GET_JUNCTION(surfInd);
+
+			if ((IS_CURVED_SURFACE(playerLastRoad) || IS_STRAIGHT_SURFACE(playerLastRoad)) && (jn->flags & 0x1))
+			{
+				exitId = 0;
+				i = 0;
+				while (i < 4)
+				{
+					if (jn->ExitIdx[i] == playerLastRoad)
+					{
+						exitId = i;
+						break;
+					}
+					i++;
+				}
+			}
+		}
+		playerLastRoad = surfInd;
+
+		// get road speed limit
+		if (GetSurfaceRoadInfo(&roadInfo, surfInd))
+		{
+			int lane;
+			int crd;
+
+			lane = GetLaneByPositionOnRoad(&roadInfo, carPos);
+
+			if (roadInfo.straight)
+				crd = (roadInfo.straight->angle - cp->hd.direction) + 1024U >> 0xb & 1;
+			else
+				crd = NotTravellingAlongCurve(carPos->vx, carPos->vz, cp->hd.direction, roadInfo.curve);
+
+			
+		maxSpeed = speedLimits[ROAD_SPEED_LIMIT(&roadInfo)];
+		}
+		else
+		{
+			maxSpeed = speedLimits[2];
+		}
+
+		if (speedLimits[2] == maxSpeed)
+			limit = (maxSpeed * 19) >> 4;
+		else
+			limit = (maxSpeed * 3) >> 1;
+
 		int speedoFlash = CameraCnt * 15; // flash speed for the speedometer
 
-		// SpeedingData fetched from Felony.c
-		if (FIXEDH(WheelSpeed) > SpeedingData && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
+		if (FIXEDH(WheelSpeed) > limit && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
 			SetTextColour(255, speedoFlash, speedoFlash); // Red and white
 			//SetColourByValue();
 		else
@@ -931,9 +981,60 @@ void DrawSpeedometer2(void)
 		else
 			sprintf(string, "%d:Mph", mph);
 
+		//Fetch the road speed limits and update. Mostly ported from felony.c. Easier Method? 
+		surfInd = GetSurfaceIndex(carPos);
+
+		// check junctions
+		if (IS_JUNCTION_SURFACE(surfInd))
+		{
+			jn = GET_JUNCTION(surfInd);
+
+			if ((IS_CURVED_SURFACE(playerLastRoad) || IS_STRAIGHT_SURFACE(playerLastRoad)) && (jn->flags & 0x1))
+			{
+				exitId = 0;
+				i = 0;
+				while (i < 4)
+				{
+					if (jn->ExitIdx[i] == playerLastRoad)
+					{
+						exitId = i;
+						break;
+					}
+					i++;
+				}
+			}
+		}
+		playerLastRoad = surfInd;
+
+		// get road speed limit
+		if (GetSurfaceRoadInfo(&roadInfo, surfInd))
+		{
+			int lane;
+			int crd;
+
+			lane = GetLaneByPositionOnRoad(&roadInfo, carPos);
+
+			if (roadInfo.straight)
+				crd = (roadInfo.straight->angle - cp->hd.direction) + 1024U >> 0xb & 1;
+			else
+				crd = NotTravellingAlongCurve(carPos->vx, carPos->vz, cp->hd.direction, roadInfo.curve);
+
+
+			maxSpeed = speedLimits[ROAD_SPEED_LIMIT(&roadInfo)];
+		}
+		else
+		{
+			maxSpeed = speedLimits[2];
+		}
+
+		if (speedLimits[2] == maxSpeed)
+			limit = (maxSpeed * 19) >> 4;
+		else
+			limit = (maxSpeed * 3) >> 1;
+
 		int speedoFlash = CameraCnt * 15; // flash speed for the speedometer
 
-		if (FIXEDH(WheelSpeed) > SpeedingData && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
+		if (FIXEDH(WheelSpeed) > limit && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
 			SetTextColour(255, speedoFlash, speedoFlash); // Red and white
 			//SetColourByValue();
 		else
