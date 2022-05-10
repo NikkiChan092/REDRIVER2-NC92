@@ -1067,6 +1067,13 @@ void LoadFrontendScreens(int full)
 		if (PsxScreens[0].userFunctionNum == 128)
 			PsxScreens[0].userFunctionNum = 23;		// DemoScreen
 
+		//[A] Multiplayer Menu Overide
+	/*	PsxScreens[6].buttons[0].action = FE_MAKEVAR(BTN_NEXT_SCREEN, 2);
+		PsxScreens[6].buttons[1].action = FE_MAKEVAR(BTN_NEXT_SCREEN, 1);
+		PsxScreens[6].buttons[2].action = FE_MAKEVAR(BTN_NEXT_SCREEN, 5);
+		PsxScreens[6].buttons[3].action = FE_MAKEVAR(BTN_NEXT_SCREEN, 9);
+		PsxScreens[6].buttons[4].action = FE_MAKEVAR(BTN_NEXT_SCREEN, 9);*/
+
 #ifndef PSX
 		// replay theater
 		PsxScreens[4].buttons[0].action = FE_MAKEVAR(BTN_NEXT_SCREEN, 39);
