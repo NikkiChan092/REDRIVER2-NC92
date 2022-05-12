@@ -176,18 +176,19 @@ void State_GameStart(void* param)
 		case GAME_TAKEADRIVE:
 
 			//[A] Make big city optional for Multiplayer
-			if (NumPlayers == 2 && gBigCityMP == 1)
-				gCurrentMissionNumber = 50;
-			else
-				if (NumPlayers == 2 && gBigCityMP == 0)
-					gCurrentMissionNumber = 58;
-				else 
-					if (NumPlayers == 1) // oops
-						gCurrentMissionNumber = 50;
+			//if (NumPlayers == 2 && gBigCityMP == 1)
+			//	gCurrentMissionNumber = 50;
+			//else
+			//	if (NumPlayers == 2 && gBigCityMP == 0)
+			//		gCurrentMissionNumber = 58;
+			//	else 
+			//		if (NumPlayers == 1) // oops
+			//			gCurrentMissionNumber = 50;
 
 			// 498
 
-			gCurrentMissionNumber += GameLevel * 2 + gWantNight + gSubGameNumber * 440;
+			//gCurrentMissionNumber += GameLevel * 2 + gWantNight + gSubGameNumber * 440;
+			gCurrentMissionNumber = 50 + GameLevel * 2 + gWantNight + gSubGameNumber;
 
 			SetState(STATE_GAMELAUNCH);
 		
@@ -214,12 +215,12 @@ void State_GameStart(void* param)
 
 			break;
 		case GAME_GATERACE:
-			if (NumPlayers == 1)
+			/*if (NumPlayers == 1)
 				gCurrentMissionNumber = 134;
 			else
-				gCurrentMissionNumber = 164;
+				gCurrentMissionNumber = 164;*/
 
-			gCurrentMissionNumber += GameLevel * 8 + gWantNight * 4 + gSubGameNumber;
+			gCurrentMissionNumber = 134 + GameLevel * 8 + gWantNight * 4 + gSubGameNumber;
 			SetState(STATE_GAMELAUNCH);
 		
 			break;
@@ -241,12 +242,12 @@ void State_GameStart(void* param)
 		case GAME_SURVIVAL:
 			gCopDifficultyLevel = 2;
 
-			if (NumPlayers == 1)
+			/*if (NumPlayers == 1)
 				gCurrentMissionNumber = 292;
 			else
-				gCurrentMissionNumber = 324;
+				gCurrentMissionNumber = 324;*/
 
-			gCurrentMissionNumber += GameLevel * 8 + gWantNight * 4 + gSubGameNumber;
+			gCurrentMissionNumber = 292 + GameLevel * 8 + gWantNight * 4 + gSubGameNumber;
 
 			SetState(STATE_GAMELAUNCH);
 			break;

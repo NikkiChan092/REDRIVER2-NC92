@@ -15,5 +15,7 @@ extern void HaveCarSoundStraightAway(char player_id); // 0x00073C54
 
 extern void MakeTheCarShutUp(char player_id); // 0x00073C8C
 
+extern long centerOfWorld;
+
 
 #endif

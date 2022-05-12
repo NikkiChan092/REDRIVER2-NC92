@@ -293,6 +293,14 @@ void UpdatePlayers(void)
 			locPlayer->pos[2] = ped->position.vz;
 			locPlayer->dir = ped->dir.vy - 2048;
 		}
+		/*if (NumPlayers == 2)
+		{
+			int centerOfWorld;
+			locPlayer->spoolXZ = (VECTOR*)centerOfWorld;
+			centerOfWorld[0] = (player[0].pos[0] - player[1].pos[0]) / 2;
+			centerOfWorld[1] = (player[0].pos[1] - player[1].pos[1]) / 2;
+			centerOfWorld[2] = (player[0].pos[2] - player[1].pos[2]) / 2;
+		}*/
 	}
 }
 

@@ -9,7 +9,7 @@ Cheats from cheat engine that need to be ported to RE:DRIVER 2:
 [ ] Both Players Can be Chased
 [ ] Gate Racing Versus Support
 [ ] Minimap + Full Pause Menu/Static Minimap Rotation
-[ ] Player 2 Spawn Point on Singleplayer Levels
+[/] Player 2 Spawn Point on Singleplayer Levels
 [ ] Render & Spawn Traffic Around the players
 [ ] Co=op Support and fixes
 [ ] Choose Players' Characters
@@ -32,7 +32,7 @@ Credits with this .exe fork of ReD2:
 
 Soapy: Lead dev/reverse engineer of Re:Driver 2 as a whole. Programmed the car reflections. 
 NikkiChan92: Crash Course C learner, programming and trying not to spaghetti. 
-Commando52Colton: 
+Commando52Colton: Programming
 MrSam: Learning C and porting over his cheat table to the .exe. 
 BlackDaddy: Feedback
 Burrito: Feedback

@@ -624,7 +624,7 @@ int main(int argc, char** argv)
 		ini_sget(config, "game", "fastLoadingScreens", "%d", &gFastLoadingScreens);
 		ini_sget(config, "game", "languageId", "%d", &gUserLanguage);
 		ini_sget(config, "game", "overrideContent", "%d", &gContentOverride);
-		ini_sget(config, "game", "BigCityMP", "%d", &gBigCityMP);
+		//ini_sget(config, "game", "BigCityMP", "%d", &gBigCityMP);
 
 		// configure game extras [A]
 		ini_sget(config,"extras", "ToggleBeamStrength", "%d", &gToggleBeamStrength);
