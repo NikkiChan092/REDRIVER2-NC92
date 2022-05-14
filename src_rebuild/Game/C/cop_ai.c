@@ -975,8 +975,8 @@ void PassiveCopTasks(CAR_DATA *cp)
 	short *playerFelony;
 
 	extern char playerNum;
-	int plID = playerNum;
-	plID ^= 1; //XOR.
+	int PLID = playerNum;
+	PLID ^= 1; //XOR.
 
 	if (player[PLID].playerCarId < 0)
 		playerFelony = &pedestrianFelony;
