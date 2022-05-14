@@ -188,10 +188,10 @@ void HandleInGameCutscene(void)
 	if (pauseflag != 0)
 		return;
 
-	if (CameraCnt < 2)
+	if (CameraCnt < 2 && NumPlayers == 1)
 		BlackBorderHeight = 28;
 
-	if (CutsceneLength-28 < CutsceneFrameCnt) 
+	if (CutsceneLength-28 < CutsceneFrameCnt && NumPlayers == 1) 
 	{
 		gSkipInGameCutscene = 0;
 		
@@ -200,8 +200,11 @@ void HandleInGameCutscene(void)
 	}
 	else 
 	{
-		if (BlackBorderHeight < 28)
-			BlackBorderHeight++;
+		if (NumPlayers == 1)
+		{
+			if (BlackBorderHeight < 28)
+				BlackBorderHeight++;
+		}
 	}
 
 	CutsceneFrameCnt++;
