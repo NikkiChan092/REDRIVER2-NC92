@@ -2670,6 +2670,9 @@ void StepEvents(void)
 								cop->yang = (evt->rotation >> 6);
 								cop->type = evt->model;
 
+								if (otherCamera != 0x4000)
+									return; // [D] [T] Let Player 2 see train without crash 
+
 								// [A] train should be only dangerous in "Beat the train"
 								if ((evt->flags & 0x12) == 2 && evt->data == VegasTrainData)
 									cop->pad = 1;

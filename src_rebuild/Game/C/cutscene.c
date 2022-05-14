@@ -188,10 +188,10 @@ void HandleInGameCutscene(void)
 	if (pauseflag != 0)
 		return;
 
-	if (CameraCnt < 2 && NumPlayers == 1)
+	if (CameraCnt < 2)
 		BlackBorderHeight = 28;
 
-	if (CutsceneLength-28 < CutsceneFrameCnt && NumPlayers == 1) 
+	if (CutsceneLength-28 < CutsceneFrameCnt) 
 	{
 		gSkipInGameCutscene = 0;
 		
@@ -200,11 +200,8 @@ void HandleInGameCutscene(void)
 	}
 	else 
 	{
-		if (NumPlayers == 1)
-		{
 			if (BlackBorderHeight < 28)
 				BlackBorderHeight++;
-		}
 	}
 
 	CutsceneFrameCnt++;
@@ -231,16 +228,16 @@ void HandleInGameCutscene(void)
 // [D] [T]
 void DrawInGameCutscene(void)
 {
-	TILE *tile;
+	TILE* tile;
 
 #ifndef PSX
 	PrintXASubtitles(SCREEN_H - 28);
 #endif
-	
+
 	if (gInGameCutsceneActive == 0 && gInGameCutsceneDelay == 0)
 	{
 #ifndef PSX
-		if(gInGameChaseActive && gUserChaseLoaded != -1 && (CameraCnt - frameStart) < 200)
+		if (gInGameChaseActive && gUserChaseLoaded != -1 && (CameraCnt - frameStart) < 200)
 		{
 			// [A] print user chaser name on screen
 			char tempStr[80];
@@ -254,45 +251,48 @@ void DrawInGameCutscene(void)
 		return;
 	}
 
-	tile = (TILE *)current->primptr;
-	SetTile(tile);
-	tile->r0 = 0;
-	tile->g0 = 0;
-	tile->b0 = 0;
+	if (NumPlayers == 1)
+	{
+		tile = (TILE*)current->primptr;
+		SetTile(tile);
+		tile->r0 = 0;
+		tile->g0 = 0;
+		tile->b0 = 0;
 
 #ifdef PSX
-	tile->x0 = 0;
-	tile->w = 320;
+		tile->x0 = 0;
+		tile->w = 320;
 #else
-	tile->x0 = -500;
-	tile->w = 1200;
+		tile->x0 = -500;
+		tile->w = 1200;
 #endif
 
-	tile->y0 = 0;
-	tile->h = BlackBorderHeight;
+		tile->y0 = 0;
+		tile->h = BlackBorderHeight;
 
-	addPrim(current->ot, tile);
-	tile++;
+		addPrim(current->ot, tile);
+		tile++;
 
-	SetTile(tile);
-	tile->r0 = 0;
-	tile->g0 = 0;
-	tile->b0 = 0;
+		SetTile(tile);
+		tile->r0 = 0;
+		tile->g0 = 0;
+		tile->b0 = 0;
 
 #ifdef PSX
-	tile->x0 = 0;
-	tile->w = 320;
+		tile->x0 = 0;
+		tile->w = 320;
 #else
-	tile->x0 = -500;
-	tile->w = 1200;
+		tile->x0 = -500;
+		tile->w = 1200;
 #endif
 
-	tile->y0 = SCREEN_H - BlackBorderHeight;
-	tile->h = BlackBorderHeight;
+		tile->y0 = SCREEN_H - BlackBorderHeight;
+		tile->h = BlackBorderHeight;
 
-	addPrim(current->ot, tile);
+		addPrim(current->ot, tile);
 
-	current->primptr += sizeof(TILE) * 2;
+		current->primptr += sizeof(TILE) * 2;
+	}
 }
 
 // [D] [T]
