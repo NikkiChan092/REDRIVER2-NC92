@@ -309,10 +309,10 @@ void GlobalTimeStep(void)
 	int carsDentedThisFrame;
 	short *felony;
 
-	if (player[0].playerCarId < 0)
+	if (player[PLID].playerCarId < 0)
 		felony = &pedestrianFelony;
 	else
-		felony = &car_data[player[0].playerCarId].felonyRating;
+		felony = &car_data[player[PLID].playerCarId].felonyRating;
 
 	StepCars();
 	CheckCarToCarCollisions();
@@ -673,13 +673,13 @@ void GlobalTimeStep(void)
 									thisDelta[j].n.angularVelocity[2] += torque[2];
 								}
 
-								if (cp->id == player[0].playerCarId || c1->id == player[0].playerCarId)
+								if (cp->id == player[PLID].playerCarId || c1->id == player[PLID].playerCarId)
 									RegisterChaseHit(cp->id, c1->id);
 
-								if (cp->id == player[0].playerCarId)
+								if (cp->id == player[PLID].playerCarId)
 									CarHitByPlayer(c1, howHard);
 
-								if (c1->id == player[0].playerCarId)
+								if (c1->id == player[PLID].playerCarId)
 									CarHitByPlayer(cp, howHard);
 							}
 						} // maybe colliding
@@ -1329,8 +1329,8 @@ void ProcessCarPad(CAR_DATA* cp, u_int pad, char PadSteer, char use_analogue)
 				// accelerate faster if closer to player
 				int dx, dz, dist;
 
-				dx = car_data[player[0].playerCarId].hd.where.t[0] - cp->hd.where.t[0] >> 10;
-				dz = car_data[player[0].playerCarId].hd.where.t[2] - cp->hd.where.t[2] >> 10;
+				dx = car_data[player[PLID].playerCarId].hd.where.t[0] - cp->hd.where.t[0] >> 10;
+				dz = car_data[player[PLID].playerCarId].hd.where.t[2] - cp->hd.where.t[2] >> 10;
 
 				dist = dx * dx + dz * dz;
 
@@ -1353,10 +1353,10 @@ void ProcessCarPad(CAR_DATA* cp, u_int pad, char PadSteer, char use_analogue)
 				CAR_DATA* tp;
 				int targetCarId, cx, cz, chase_square_dist;
 
-				if (player[0].playerCarId == cp->id)
-					targetCarId = player[0].targetCarId;
-				else if (player[1].playerCarId == cp->id)
-					targetCarId = player[1].targetCarId;
+				if (player[PLID].playerCarId == cp->id)
+					targetCarId = player[PLID].targetCarId;
+				else if (player[PLID].playerCarId == cp->id)
+					targetCarId = player[PLID].targetCarId;
 				else
 					targetCarId = -1;
 
