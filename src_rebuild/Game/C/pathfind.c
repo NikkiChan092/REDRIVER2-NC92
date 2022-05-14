@@ -341,8 +341,8 @@ void InvalidateMapEnds()
 	int tile;
 	int i;
 	XZPAIR pos;
-	pos.x = (player[PLID].pos[0] & ~1023) >> 10;
-	pos.z = (player[PLID].pos[2] & ~1023) >> 10;
+	pos.x = (player[0].pos[0] & ~1023) >> 10;
+	pos.z = (player[0].pos[2] & ~1023) >> 10;
 
 	for(i = 0; i < 32; i++)
 	{
@@ -374,8 +374,8 @@ void InvalidateMap(void)
 	p = 0;
 	dir = 0;
 
-	bPos.vx = player[PLID].pos[0] & ~1023;
-	bPos.vz = player[PLID].pos[2] & ~1023;
+	bPos.vx = player[0].pos[0] & ~1023;
+	bPos.vz = player[0].pos[2] & ~1023;
 
 	for(count = 0; count < 1024; count++)
 	{
@@ -428,9 +428,9 @@ void BloodyHell(void)
 	cellsThisFrame = 0;
 	
 	// [A] really it should be based on player's height
-	bPos.vy = player[PLID].pos[1];
-	bPos.vx = player[PLID].pos[0] & ~1023;
-	bPos.vz = player[PLID].pos[2] & ~1023;
+	bPos.vy = player[0].pos[1];
+	bPos.vx = player[0].pos[0] & ~1023;
+	bPos.vz = player[0].pos[2] & ~1023;
 
 	howMany = cellsPerFrame;
 
@@ -949,10 +949,10 @@ void UpdateCopMap(void)
 	else
 	{
 		// restart from new search target position
-		if (player[PLID].playerType == 1 && (CopsCanSeePlayer != 0 || numActiveCops == 0))
+		if (player[0].playerType == 1 && (CopsCanSeePlayer != 0 || numActiveCops == 0))
 		{
 			CAR_DATA* cp;
-			cp = &car_data[player[PLID].playerCarId];
+			cp = &car_data[player[0].playerCarId];
 
 			searchTarget.vx = cp->hd.where.t[0] + FIXEDH(cp->st.n.linearVelocity[0]) * 8;
 			searchTarget.vy = cp->hd.where.t[1] + FIXEDH(cp->st.n.linearVelocity[1]) * 4;
@@ -960,9 +960,9 @@ void UpdateCopMap(void)
 		}
 		else if (searchTarget.vy == -12367)
 		{
-			searchTarget.vx = player[PLID].pos[0];
-			searchTarget.vy = player[PLID].pos[1];
-			searchTarget.vz = player[PLID].pos[2];
+			searchTarget.vx = player[0].pos[0];
+			searchTarget.vy = player[0].pos[1];
+			searchTarget.vz = player[0].pos[2];
 		}
 
 		// step up distance frame (and invalidate by setting bit 1)
@@ -1043,9 +1043,9 @@ void UpdateCopMap(void)
 		pathFrames = 0;
 	}
 
-	dx = searchTarget.vx - player[PLID].pos[0] >> 4;
-	dy = searchTarget.vy - player[PLID].pos[1] >> 4;
-	dz = searchTarget.vz - player[PLID].pos[2] >> 4;
+	dx = searchTarget.vx - player[0].pos[0] >> 4;
+	dy = searchTarget.vy - player[0].pos[1] >> 4;
+	dz = searchTarget.vz - player[0].pos[2] >> 4;
 
 	playerTargetDistanceSq = dx * dx + dy * dy + dz * dz;
 }
@@ -1059,9 +1059,9 @@ int getHeadingToPlayer(int vx, int vy, int vz)
 	int val;
 	VECTOR pos;
 
-	dx = vx - player[PLID].pos[0] >> 4;
-	dy = vy - player[PLID].pos[1] >> 4;
-	dz = vz - player[PLID].pos[2] >> 4;
+	dx = vx - player[0].pos[0] >> 4;
+	dy = vy - player[0].pos[1] >> 4;
+	dz = vz - player[0].pos[2] >> 4;
 
 	val = 4004;
 
@@ -1106,8 +1106,8 @@ int getHeadingToPlayer(int vx, int vy, int vz)
 
 	ReplayLog_Fnarr_He_Said_Log(val);
 
-	dx = player[PLID].pos[0] - vx;
-	dz = player[PLID].pos[2] - vz;
+	dx = player[0].pos[0] - vx;
+	dz = player[0].pos[2] - vz;
 
 	return ratan2(dx, dz) + 4096;
 }
