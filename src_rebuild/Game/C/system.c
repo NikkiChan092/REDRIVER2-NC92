@@ -15,6 +15,7 @@
 #include "pad.h"
 #include "draw.h"
 #include "pause.h"
+#include "cutscene.h"
 
 char gDataFolder[32] = "DRIVER2\\";
 
@@ -735,7 +736,7 @@ void SetupDrawBuffers(void)
 	MPBuff[0][0].disp.screen.x = draw_mode.framex;
 	MPBuff[0][1].disp.screen.x = draw_mode.framex;
 
-	if (NoPlayerControl == 0)
+	if (NoPlayerControl == 0 || gInGameCutsceneActive != 0)
 		SetupDrawBufferData(NumPlayers);
 	else
 		SetupDrawBufferData(1);

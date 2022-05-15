@@ -973,11 +973,14 @@ void ControlCopDetection(void)
 void PassiveCopTasks(CAR_DATA *cp)
 {
 	short *playerFelony;
+	extern char playerNum;
 
-	if (player[0].playerCarId < 0)
+	plID ^= 1; // XOR
+
+	if (player[playerNum].playerCarId < 0)
 		playerFelony = &pedestrianFelony;
 	else 
-		playerFelony = &car_data[player[0].playerCarId].felonyRating;
+		playerFelony = &car_data[player[playerNum].playerCarId].felonyRating;
 
 	if (*playerFelony <= FELONY_PURSUIT_MIN_VALUE)
 		return;

@@ -1610,7 +1610,7 @@ int ObjectDrawnValue = 0;
 // [D] [T]
 void DrawGame(void)
 {
-	if (NumPlayers == 1 || NoPlayerControl)
+	if (NumPlayers == 1 || NoPlayerControl || gInGameCutsceneActive != 0) // end fixes cutscenes in MP
 	{
 		ObjectDrawnValue = FrameCnt;
 		DrawPauseMenus();
