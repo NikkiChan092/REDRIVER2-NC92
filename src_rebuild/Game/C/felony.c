@@ -45,7 +45,6 @@ int FelonyDecreaseTimer = 0;
 int gP1SpeedingData = 0; // For Player 1
 //int gP2SpeedingData = 0; // TODO
 
-extern char playerNum;
 char plID = playerNum;
 
 

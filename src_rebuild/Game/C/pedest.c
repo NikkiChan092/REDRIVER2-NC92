@@ -1793,7 +1793,6 @@ void SetupCivJump(LPPEDESTRIAN pPed, CAR_DATA* cp)
 	int dx;
 	short angle;
 	LONGVECTOR4 dir;
-	extern char playerNum; 
 
 	if (pPed->type != PED_ACTION_JUMP)
 	{
@@ -1803,7 +1802,7 @@ void SetupCivJump(LPPEDESTRIAN pPed, CAR_DATA* cp)
 		// if player horns make scare box bigger and give player felony
 		if (cp == &car_data[player[playerNum].playerCarId])
 		{
-			if (player[0].horn.on != 0)
+			if (player[playerNum].horn.on != 0)
 				scale = 2048;
 			else
 				scale = 4096;

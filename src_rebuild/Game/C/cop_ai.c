@@ -219,10 +219,10 @@ void UpdateCopSightData(void)
 {
 	short* playerFelony;
 
-	if (player[0].playerCarId < 0)
+	if (player[playerNum].playerCarId < 0)
 		playerFelony = &pedestrianFelony;
 	else
-		playerFelony = &car_data[player[0].playerCarId].felonyRating;
+		playerFelony = &car_data[player[playerNum].playerCarId].felonyRating;
 
 	if (*playerFelony > FELONY_PURSUIT_MIN_VALUE)
 	{
@@ -351,10 +351,10 @@ void CopControl1(CAR_DATA *cp)
 	iVectNT path[2];
 	AIZone targetZone;
 
-	if (player[0].playerCarId < 0)
+	if (player[playerNum].playerCarId < 0)
 		playerFelony = &pedestrianFelony;
 	else
-		playerFelony = &car_data[player[0].playerCarId].felonyRating;
+		playerFelony = &car_data[player[playerNum].playerCarId].felonyRating;
 
 	desiredSteerAngle = 0;
 
@@ -645,7 +645,7 @@ void CopControl1(CAR_DATA *cp)
 
 			cp->ai.p.desiredSpeed = FIXEDH(cp->ai.p.desiredSpeed * (maxPower + FIXEDH(*playerFelony * gCopData.autoDesiredSpeedScaleLimit)));
 
-			if ((gPuppyDogCop || player[0].playerType == 2) && cp->ai.p.close_pursuit)
+			if ((gPuppyDogCop || player[playerNum].playerType == 2) && cp->ai.p.close_pursuit)
 			{
 				plcrspd = targetVehicle->hd.speed + 10;
 				
@@ -715,10 +715,10 @@ void CopControl1(CAR_DATA *cp)
 	if (pathStraight != 0)
 		maxPower += (gCopDifficultyLevel + 4) * 1024;
 
-	if (player[0].playerCarId < 0)
+	if (player[playerNum].playerCarId < 0)
 		playerFelony = &pedestrianFelony;
 	else
-		playerFelony = &car_data[player[0].playerCarId].felonyRating;
+		playerFelony = &car_data[player[playerNum].playerCarId].felonyRating;
 
 	maxPower = FIXEDH(maxPower * (gCopMaxPowerScale + FIXEDH(*playerFelony * gCopData.autoMaxPowerScaleLimit)));
 
@@ -767,10 +767,11 @@ void ControlCopDetection(void)
 	CAR_DATA *cp;
 	VECTOR vec;
 	int ccx, ccz;
+	extern char playerNum;
 
-	vec.vx = player[0].pos[0];
-	vec.vy = player[0].pos[1];
-	vec.vz = player[0].pos[2];
+	vec.vx = player[playerNum].pos[0];
+	vec.vy = player[playerNum].pos[1];
+	vec.vz = player[playerNum].pos[2];
 
 	GetVisSetAtPosition(&vec, CopWorkMem, &ccx, &ccz);
 
@@ -873,9 +874,9 @@ void ControlCopDetection(void)
 
 #if ENABLE_GAME_ENCHANCEMENTS
 	// [A] if Tanner is outside car, cops can arrest him if they are too close
-	if(player[0].playerType == 2 && minDistanceToPlayer < 2048 && !player[0].dying && pedestrianFelony > FELONY_PURSUIT_MIN_VALUE)
+	if(player[playerNum].playerType == 2 && minDistanceToPlayer < 2048 && !player[playerNum].dying && pedestrianFelony > FELONY_PURSUIT_MIN_VALUE)
 	{
-		player[0].dying = 1;
+		player[playerNum].dying = 1;
 		
 		SetMissionMessage(G_LTXT(GTXT_YouveBeenCaught),3,2);
 		SetMissionFailed(FAILED_MESSAGESET);
@@ -973,7 +974,6 @@ void ControlCopDetection(void)
 void PassiveCopTasks(CAR_DATA *cp)
 {
 	short *playerFelony;
-	extern char playerNum;
 
 	plID ^= 1; // XOR
 
@@ -1015,10 +1015,10 @@ void ControlNumberOfCops(void)
 
 	while( true ) 
 	{
-		if (player[0].playerCarId < 0)
+		if (player[playerNum].playerCarId < 0)
 			playerFelony = &pedestrianFelony;
 		else
-			playerFelony = &car_data[player[0].playerCarId].felonyRating;
+			playerFelony = &car_data[player[playerNum].playerCarId].felonyRating;
 
 		if (*playerFelony < *pTrigger) 
 			break;
@@ -1118,10 +1118,10 @@ void ControlCops(void)
 	}
 #endif
 
-	if (player[0].playerCarId < 0)
+	if (player[playerNum].playerCarId < 0)
 		playerFelony = &pedestrianFelony;
 	else
-		playerFelony = &car_data[player[0].playerCarId].felonyRating;
+		playerFelony = &car_data[player[playerNum].playerCarId].felonyRating;
 
 	gCopData.autoBatterPlayerTrigger = 2048;
 
@@ -1134,17 +1134,17 @@ void ControlCops(void)
 	}
 	else
 	{
-		if (player[0].playerCarId > -1)
-			targetVehicle = &car_data[player[0].playerCarId];
+		if (player[playerNum].playerCarId > -1)
+			targetVehicle = &car_data[player[playerNum].playerCarId];
 		else
 			targetVehicle = &car_data[TANNER_COLLIDER_CARID];	// [A] fix bug of chasing car
 
 		if (player_position_known > 0)
 		{
-			lastKnownPosition.vx = player[0].pos[0];
-			lastKnownPosition.vy = player[0].pos[1];
-			lastKnownPosition.vz = player[0].pos[2];
-			lastKnownPosition.pad = player[0].pos[3];
+			lastKnownPosition.vx = player[playerNum].pos[0];
+			lastKnownPosition.vy = player[playerNum].pos[1];
+			lastKnownPosition.vz = player[playerNum].pos[2];
+			lastKnownPosition.pad = player[playerNum].pos[3];
 		}
 
 		// update pathfinding
@@ -1166,7 +1166,7 @@ void ControlCops(void)
 				{
 					rnd = Random2(1);
 
-					if ((MaxPlayerDamage[0] * 3) / 4 < car_data[player[0].playerCarId].totalDamage)
+					if ((MaxPlayerDamage[0] * 3) / 4 < car_data[player[playerNum].playerCarId].totalDamage)
 						phrase = rnd % 4;
 					else
 						phrase = rnd % 3;
