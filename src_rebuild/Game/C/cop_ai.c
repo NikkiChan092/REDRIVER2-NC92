@@ -503,6 +503,8 @@ void CopControl1(CAR_DATA *cp)
 		cp->ai.p.stuckTimer = 0;
 	}
 
+	targetVehicle = &car_data[cp->ai.p.chaseTarget];
+
 	dvx = targetVehicle->st.n.linearVelocity[0] - cp->st.n.linearVelocity[0];
 	dvz = targetVehicle->st.n.linearVelocity[2] - cp->st.n.linearVelocity[2];
 	
@@ -977,10 +979,10 @@ void PassiveCopTasks(CAR_DATA *cp)
 
 	plID ^= 1; // XOR
 
-	if (player[playerNum].playerCarId < 0)
+	if (player[plID].playerCarId < 0)
 		playerFelony = &pedestrianFelony;
 	else 
-		playerFelony = &car_data[player[playerNum].playerCarId].felonyRating;
+		playerFelony = &car_data[player[plID].playerCarId].felonyRating;
 
 	if (*playerFelony <= FELONY_PURSUIT_MIN_VALUE)
 		return;
@@ -991,6 +993,8 @@ void PassiveCopTasks(CAR_DATA *cp)
 		return;
 
 	InitCopState(cp, NULL);
+	//cp->ai.p.chaseTarget = player[plID].playerCarId;
+	cp->ai.p.chaseTarget = 1;
 
 	cp->ai.p.justPinged = 0;
 

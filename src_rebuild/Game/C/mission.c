@@ -2088,7 +2088,7 @@ int MRCommand(MR_THREAD *thread, u_int cmd)
 	{
 		val1 = MRPop(thread);
 
-		MR_DebugWarn("MR %d command: SetPlayerFelony(%d)\n", thread - MissionThreads, val1);
+		MR_DebugWarn("MR %d command: SetPlayerFelony(%d)\n", thread - MissionThreads, val1); // 
 
 		if (player[playerNum].playerCarId < 0)
 			pedestrianFelony = val1;
