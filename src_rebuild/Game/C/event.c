@@ -2438,7 +2438,7 @@ void StepEvents(void)
 				} while (i < MAX_CARS && i < 32);
 
 				// make Tanner on boat also
-				if (player[0].playerType == 2 && OnBoat((VECTOR*)player[0].pos, ev, &dist))
+				if (player[NumPlayers].playerType == 2 && OnBoat((VECTOR*)player[NumPlayers].pos, ev, &dist))
 					carsOnBoat |= (1 << TANNER_COLLIDER_CARID) | 0x200000;// 0x300000;
 
 				BoatOffset(&boatOffset, ev);

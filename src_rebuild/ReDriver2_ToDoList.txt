@@ -34,6 +34,7 @@ Soapy: Lead dev/reverse engineer of Re:Driver 2 as a whole. Programmed the car r
 NikkiChan92: Crash Course C learner, programming and trying not to spaghetti. 
 Commando52Colton: Programming
 MrSam: Learning C and porting over his cheat table to the .exe. 
+Predator: Assistance and programming.
 BlackDaddy: Feedback
 Burrito: Feedback
 Snoopii: Feedback and additional C support. 

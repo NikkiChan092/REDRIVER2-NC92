@@ -1070,7 +1070,7 @@ void PedCarryOutAnimation(LPPEDESTRIAN pPed)
 	}
 }
 
-CAR_DATA* carToGetIn;
+CAR_DATA* carToGetIn[MAX_PLAYERS];
 int bReverseYRotation = 0;
 
 // [D] [T]
@@ -1094,7 +1094,7 @@ void PedGetOutCar(LPPEDESTRIAN pPed)
 		pPed->speed = 0;
 		pPed->fpAgitatedState = NULL;
 		pPed->flags &= ~0x10;
-		pPed->dir.vy = carToGetIn->hd.direction - 2048;
+		pPed->dir.vy = carToGetIn[playerId]->hd.direction - 2048;
 
 		bReverseYRotation = 0;
 	}
@@ -1146,7 +1146,7 @@ void SetupGetOutCar(LPPEDESTRIAN pPed, CAR_DATA* pCar, int side)
 	}
 
 	pPed->frame1 = 0;
-	carToGetIn = pCar;
+	carToGetIn[playerId] = pCar;
 }
 
 
@@ -1167,36 +1167,36 @@ void SetupGetInCar(LPPEDESTRIAN pPed)
 
 	playerId = pPed->padId;
 
-	sn = rsin(carToGetIn->hd.direction);
-	cs = rcos(carToGetIn->hd.direction);
+	sn = rsin(carToGetIn[playerId]->hd.direction);
+	cs = rcos(carToGetIn[playerId]->hd.direction);
 
-	entrySide = cs * (carToGetIn->hd.where.t[0] - pPed->position.vx) - FIXED(sn * ONE) * (carToGetIn->hd.where.t[2] - pPed->position.vz) + 2048 < 0;
+	entrySide = cs * (carToGetIn[playerId]->hd.where.t[0] - pPed->position.vx) - FIXED(sn * ONE) * (carToGetIn[playerId]->hd.where.t[2] - pPed->position.vz) + 2048 < 0;
 
 	if (entrySide)
-		pPed->dir.vy = carToGetIn->hd.direction + 1024;
+		pPed->dir.vy = carToGetIn[playerId]->hd.direction + 1024;
 	else
-		pPed->dir.vy = carToGetIn->hd.direction - 1024;
+		pPed->dir.vy = carToGetIn[playerId]->hd.direction - 1024;
 
-	if (pPed->dir.vy > carToGetIn->hd.direction)
+	if (pPed->dir.vy > carToGetIn[playerId]->hd.direction)
 		xOfs = -400;
 	else
 		xOfs = 400;
 
-	carDir = carToGetIn->hd.direction + 2048;
+	carDir = carToGetIn[playerId]->hd.direction + 2048;
 
 	if (NoPlayerControl == 0 && gInGameCutsceneActive == 0)
 	{
 		player[playerId].cameraView = 5;
-		player[playerId].cameraPos.vx = carToGetIn->hd.where.t[0] - (FIXED(xOfs * RCOS(carDir)) - FIXED(RSIN(carDir) * 800));
-		player[playerId].cameraPos.vy = -200 - carToGetIn->hd.where.t[1];
-		player[playerId].cameraPos.vz = carToGetIn->hd.where.t[2] + (FIXED(xOfs * RSIN(carDir)) + FIXED(RCOS(carDir) * 800));
+		player[playerId].cameraPos.vx = carToGetIn[playerId]->hd.where.t[0] - (FIXED(xOfs * RCOS(carDir)) - FIXED(RSIN(carDir) * 800));
+		player[playerId].cameraPos.vy = -200 - carToGetIn[playerId]->hd.where.t[1];
+		player[playerId].cameraPos.vz = carToGetIn[playerId]->hd.where.t[2] + (FIXED(xOfs * RSIN(carDir)) + FIXED(RCOS(carDir) * 800));
 	}
 
-	if ((carToGetIn->controlFlags & CONTROL_FLAG_WAS_PARKED) == 0)
+	if ((carToGetIn[playerId]->controlFlags & CONTROL_FLAG_WAS_PARKED) == 0)
 	{
-		if (carToGetIn->controlType == CONTROL_TYPE_CIV_AI && carToGetIn->ai.c.thrustState == 3 && carToGetIn->ai.c.ctrlState == 5)
+		if (carToGetIn[playerId]->controlType == CONTROL_TYPE_CIV_AI && carToGetIn[playerId]->ai.c.thrustState == 3 && carToGetIn[playerId]->ai.c.ctrlState == 5)
 		{
-			carToGetIn->controlFlags |= CONTROL_FLAG_WAS_PARKED;
+			carToGetIn[playerId]->controlFlags |= CONTROL_FLAG_WAS_PARKED;
 		}
 		else
 		{
@@ -1208,7 +1208,7 @@ void SetupGetInCar(LPPEDESTRIAN pPed)
 			CreatePedAtLocation(&pos, 8);
 			Start3DSoundVolPitch(-1, SOUND_BANK_TANNER, 5, pos[0], pos[1], pos[2], 0, 0x1000);
 
-			carToGetIn->controlFlags |= CONTROL_FLAG_WAS_PARKED;
+			carToGetIn[playerId]->controlFlags |= CONTROL_FLAG_WAS_PARKED;
 		}
 	}
 }
@@ -1233,7 +1233,7 @@ void PedGetInCar(LPPEDESTRIAN pPed)
 
 		pPed->flags &= ~0x10;
 
-		ChangePedPlayerToCar(playerID, carToGetIn);
+		ChangePedPlayerToCar(playerID, carToGetIn[playerID]);
 		DestroyPedestrian(pPed);
 
 		numTannerPeds--;
@@ -2526,7 +2526,7 @@ void ProcessChairLump(char* lump_file, int lump_size)
 
 // [D] [T]
 // Havana easter egg.
-void IHaveThePower(void)
+void IHaveThePower(int pId)
 {
 	CAR_DATA* cp;
 	LONGVECTOR4 force = { 0x9000, 0, 0, 0 };
@@ -2535,8 +2535,32 @@ void IHaveThePower(void)
 	if (GameLevel != 1)
 		return;
 
+	int playerOneInside = 0;
+	int playerTwoInside = 0;
+
 	if (player[0].pos[0] > -231749 || player[0].pos[0] < -232147 ||
 		player[0].pos[2] < -236229 || player[0].pos[2] > -235831)
+	{
+		playerOneInside = 0;
+	}
+	else
+	{
+		playerOneInside = 1;
+	}
+
+	// Check if it's player TWO who's inside with this ugly code, hue hue
+
+	if (player[1].pos[0] > -231749 || player[1].pos[0] < -232147 ||
+		player[1].pos[2] < -236229 || player[1].pos[2] > -235831)
+	{
+		playerTwoInside = 0;
+	}
+	else
+	{
+		playerTwoInside = 1;
+	}
+
+	if (playerOneInside == 0 && playerTwoInside == 0)
 	{
 		// if player gets out the zone, restore weather back
 		if (bPower != 0)
@@ -2548,8 +2572,21 @@ void IHaveThePower(void)
 		return;
 	}
 
+
 	if (tannerPad & TANNER_PAD_POWER)
 	{
+		if (playerOneInside == 1 && pId == 0)
+		{
+
+		}
+		else if (playerTwoInside == 1 && pId == 1)
+		{
+
+		}
+		else return;
+
+
+
 		if (bPower == 0)
 		{
 			oldWeather = gWeather;
@@ -2582,6 +2619,7 @@ void IHaveThePower(void)
 
 		if (powerCounter > 48)
 			powerCounter = 0;
+
 	}
 }
 
@@ -2617,7 +2655,7 @@ void ProcessTannerPad(LPPEDESTRIAN pPed, u_int pad, char PadSteer, char use_anal
 			tannerPad |= (PadSteer < 0) ? TANNER_PAD_TURNLEFT : TANNER_PAD_TURNRIGHT;
 	}
 
-	IHaveThePower();	// process Havana easter egg near the entrance cemetery
+	IHaveThePower(padId);	// process Havana easter egg near the entrance cemetery
 
 	vec.vx = pPed->position.vx;
 	vec.vy = -pPed->position.vy;
@@ -2670,7 +2708,7 @@ void ProcessTannerPad(LPPEDESTRIAN pPed, u_int pad, char PadSteer, char use_anal
 
 	// "Car Bomb" cutscene
 	if (gInGameCutsceneActive && gCurrentMissionNumber == 23 &&
-		gInGameCutsceneID == 0 && CameraCnt == 459 && pPed->pedType != TANNER_MODEL &&
+		gInGameCutsceneID == 0 && CameraCnt == 459 && pPed->pedType == OTHER_SPRITE &&
 		(!ActiveCheats.cheat12 || pPed->pedType != OTHER_MODEL))
 	{
 		lcp->pPed = NULL;
@@ -2908,6 +2946,30 @@ int ActivatePlayerPedestrian(CAR_DATA* pCar, char* padId, int direction, LONGVEC
 	pedptr->head_rot = 0;
 	lp->headTimer = 0;
 	pedptr->pedType = playerType;
+
+	if (NumPlayers == 2 && ActiveCheats.cheat12)
+		pedptr->pedType = playerType;
+	else
+	{
+		if (NumPlayers == 2 && lp == &player[1])
+		{
+			if (GameLevel != 2 || gCurrentMissionNumber == 25 || GameLevel == 2 && GameType != GAME_MISSION)
+			{
+				pedptr->pedType = 2; //player 2 model.
+				pedptr->pallet = 0x50; //player 2 pallet.
+			}
+			if (GameLevel == 2 && GameType == GAME_MISSION && gCurrentMissionNumber != 25)
+			{
+				pedptr->pedType = 1; //player 2 model.
+			}
+			if (lp == &player[NumPlayers])
+			{
+				pedptr->pedType = 2;
+				pedptr->pallet = 0x44;
+			}
+		}
+	}
+
 	SetupPedestrian(pedptr);
 
 	if (pCar == NULL)
@@ -3005,7 +3067,7 @@ void DeActivatePlayerPedestrian(LPPEDESTRIAN pPed)
 
 	if (getIn != 0)
 	{
-		carToGetIn = cp;
+		carToGetIn[playerId] = cp;
 		pPed->type = PED_ACTION_GETINCAR;
 		pPed->fpAgitatedState = PedGetInCar;
 
