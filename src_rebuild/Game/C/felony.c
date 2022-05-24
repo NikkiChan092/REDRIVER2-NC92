@@ -45,8 +45,6 @@ int FelonyDecreaseTimer = 0;
 int gP1SpeedingData = 0; // For Player 1
 //int gP2SpeedingData = 0; // TODO
 
-char plID = playerNum;
-
 
 // [D] [T]
 void InitFelonyDelayArray(FELONY_DELAY *pFelonyDelay, short *pMaximum, int count)
@@ -102,10 +100,10 @@ void NoteFelony(FELONY_DATA *pFelonyData, char type, short scale)
 	int phrase;
 	int additionalFelonyPoints;
 
-	if (player[playerNum].playerCarId < 0)
+	if (player[0].playerCarId < 0)
 		felony = &pedestrianFelony;
 	else
-		felony = &car_data[player[playerNum].playerCarId].felonyRating;
+		felony = &car_data[player[0].playerCarId].felonyRating;
 
 	felonyTooLowForRoadblocks = *felony;
 
@@ -170,14 +168,14 @@ void NoteFelony(FELONY_DATA *pFelonyData, char type, short scale)
 		*felony = FELONY_MAX_VALUE;
 
 	// KILL PEDESTRIAN FELONY HERE
-	if (player[playerNum].playerType == 2)
+	if (player[0].playerType == 2)
 		*felony = 0;
 
 	if (first_offence == 0 && numActiveCops)
 	{
 		// say something..
 		rnd = Random2(1);
-		dir = GetCarDirectionOfTravel(&car_data[player[playerNum].playerCarId]);
+		dir = GetCarDirectionOfTravel(&car_data[player[0].playerCarId]);
 
 		switch (type)
 		{
@@ -203,7 +201,7 @@ void NoteFelony(FELONY_DATA *pFelonyData, char type, short scale)
 			default:
 				if ((rnd % 17) & 0xFF == 0)
 				{
-					if (MaxPlayerDamage[0] * 3 / 4 < car_data[player[playerNum].playerCarId].totalDamage)
+					if (MaxPlayerDamage[0] * 3 / 4 < car_data[player[0].playerCarId].totalDamage)
 						phrase = rnd % 4;
 					else
 						phrase = rnd % 3;
@@ -238,10 +236,10 @@ void AdjustFelony(FELONY_DATA *pFelonyData)
 	FELONY_DELAY *pFelonyDelay;
 	short *felony;
 
-	if (player[playerNum].playerCarId < 0)
+	if (player[0].playerCarId < 0)
 		felony = &pedestrianFelony;
 	else
-		felony = &car_data[player[playerNum].playerCarId].felonyRating;
+		felony = &car_data[player[0].playerCarId].felonyRating;
 
 	if (*felony != 0 && *felony <= FELONY_PURSUIT_MIN_VALUE)
 	{
@@ -303,7 +301,7 @@ void CheckPlayerMiscFelonies(void)
 			Player2FelonyBar.active == 0)
 		return;
 
-	cp = &car_data[player[playerNum].playerCarId];
+	cp = &car_data[player[0].playerCarId];
 	carPos = (VECTOR *)cp->hd.where.t;
 
 	surfInd = GetSurfaceIndex(carPos);

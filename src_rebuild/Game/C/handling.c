@@ -309,12 +309,10 @@ void GlobalTimeStep(void)
 	int carsDentedThisFrame;
 	short *felony;
 
-	extern char playerNum;
-
-	if (player[playerNum].playerCarId < 0)
+	if (player[0].playerCarId < 0)
 		felony = &pedestrianFelony;
 	else
-		felony = &car_data[player[playerNum].playerCarId].felonyRating;
+		felony = &car_data[player[0].playerCarId].felonyRating;
 
 	StepCars();
 	CheckCarToCarCollisions();
@@ -675,13 +673,13 @@ void GlobalTimeStep(void)
 									thisDelta[j].n.angularVelocity[2] += torque[2];
 								}
 
-								if (cp->id == player[playerNum].playerCarId || c1->id == player[playerNum].playerCarId)
+								if (cp->id == player[0].playerCarId || c1->id == player[0].playerCarId)
 									RegisterChaseHit(cp->id, c1->id);
 
-								if (cp->id == player[playerNum].playerCarId)
+								if (cp->id == player[0].playerCarId)
 									CarHitByPlayer(c1, howHard);
 
-								if (c1->id == player[playerNum].playerCarId)
+								if (c1->id == player[0].playerCarId)
 									CarHitByPlayer(cp, howHard);
 							}
 						} // maybe colliding

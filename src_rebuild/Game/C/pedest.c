@@ -1800,9 +1800,9 @@ void SetupCivJump(LPPEDESTRIAN pPed, CAR_DATA* cp)
 		pPed->speed = 30;
 
 		// if player horns make scare box bigger and give player felony
-		if (cp == &car_data[player[playerNum].playerCarId])
+		if (cp == &car_data[player[0].playerCarId])
 		{
-			if (player[playerNum].horn.on != 0)
+			if (player[0].horn.on != 0)
 				scale = 2048;
 			else
 				scale = 4096;

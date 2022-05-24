@@ -1638,6 +1638,11 @@ void DrawTanner(LPPEDESTRIAN pPed)
 	iCurrBone = 0;
 	newShowTanner(pPed);
 
+	if (NumPlayers == 2)
+	{
+		DrawCharacter(pPed);
+	}
+
 	v.vx = pPed->position.vx;
 	v.vy = -pPed->position.vy;
 	v.vz = pPed->position.vz;
@@ -1692,7 +1697,7 @@ int DrawCharacter(LPPEDESTRIAN pPed)
 	iCurrBone = 0;
 	newShowTanner(pPed);
 
-	if (pUsedPeds->pNext == NULL && pPed->pedType == TANNER_MODEL)
+	if (pPed->pedType <= 1U && NumPlayers == 1)
 	{
 		v.vx = (pPed->position.vx - camera_position.vx) + Skel[ROOT].pvOrigPos->vx;
 		v.vz = (pPed->position.vz - camera_position.vz) + Skel[ROOT].pvOrigPos->vz;
@@ -1713,7 +1718,7 @@ int DrawCharacter(LPPEDESTRIAN pPed)
 
 		bDoingShadow = 0;
 	}
-	else if (pPed->pedType == CIVILIAN)
+	else
 	{
 		pos.vx = pPed->position.vx;
 		pos.vy = pPed->position.vy;
@@ -1722,7 +1727,7 @@ int DrawCharacter(LPPEDESTRIAN pPed)
 		fr = pPed->frame1 & 7;
 		phase = fr * 2;
 
-		pos.vy = (30 - MapHeight(&pos)) - camera_position.vy;
+		pos.vy = (4 - MapHeight(&pos)) - camera_position.vy;
 
 		pos.vx -= camera_position.vx;
 		pos.vz -= camera_position.vz;
@@ -1733,13 +1738,12 @@ int DrawCharacter(LPPEDESTRIAN pPed)
 			size = -phase + 96;
 
 		cv.b = cv.g = cv.r = 40;
-		
+
 		RoundShadow(&pos, &cv, size);
 	}
 
 	return 1;
 }
-
 
 POLY_FT4 ft4TannerShadow[2];
 TILE tileTannerClear[2];

@@ -58,8 +58,25 @@ void DisplayPlayerPosition(void)
 {
 	char string[40];
 
-	sprintf(string, "X: %d, Y: %d, Z: %d", player[0].pos[0], player[0].pos[1], player[0].pos[2]);
-	PrintString(string, 20, 210);
+	if (NumPlayers == 1)
+	{
+		sprintf(string, "X: %d, Y: %d, Z: %d", player[0].pos[0], player[0].pos[1], player[0].pos[2]);
+		SetTextColour(128, 128, 64);
+		PrintString(string, 20, 210);
+	}
+	else
+	{
+		// Player 1
+		sprintf(string, "X: %d, Y: %d, Z: %d", player[0].pos[0], player[0].pos[1], player[0].pos[2]);
+		SetTextColour(128, 128, 64);
+		PrintString(string, 20, 100);
+
+		// Player 2
+		sprintf(string, "X: %d, Y: %d, Z: %d", player[1].pos[0], player[1].pos[1], player[1].pos[2]);
+		SetTextColour(128, 128, 64);
+		PrintString(string, 20, 210);
+	}
+	SetTextColour(128, 128, 64);
 }
 
 // [D] [T]

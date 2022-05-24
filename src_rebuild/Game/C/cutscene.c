@@ -251,8 +251,7 @@ void DrawInGameCutscene(void)
 		return;
 	}
 
-	if (NumPlayers == 1)
-	{
+	
 		tile = (TILE*)current->primptr;
 		SetTile(tile);
 		tile->r0 = 0;
@@ -292,7 +291,7 @@ void DrawInGameCutscene(void)
 		addPrim(current->ot, tile);
 
 		current->primptr += sizeof(TILE) * 2;
-	}
+	
 }
 
 // [D] [T]
