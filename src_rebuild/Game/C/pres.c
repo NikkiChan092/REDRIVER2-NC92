@@ -24,6 +24,9 @@ int gTextureChoice = 0;
 int gDigitChoice = 0;
 stbtt_packedchar gSTBCharData[224];	// ASCII 32..126 is 95 glyphs
 
+int gFontScale = 4096;
+int gLastFontScale = 4096;
+
 void InitHiresFonts()
 {
 	char namebuffer[64];
@@ -147,7 +150,9 @@ void GetHiresBakedQuad(int char_index, float* xpos, float* ypos, stbtt_aligned_q
 	float iph = 1.0f / (float)HIRES_FONT_SIZE_H;
 	const stbtt_packedchar* b = gSTBCharData + char_index;
 
-	float scale = 0.45f;
+	float scaling = gFontScale / 4096.f;
+
+	float scale = 0.45f * scaling;
 
 	float s_x = b->x1 - b->x0;
 	float s_y = b->y1 - b->y0;
@@ -162,7 +167,7 @@ void GetHiresBakedQuad(int char_index, float* xpos, float* ypos, stbtt_aligned_q
 	q->s1 = s_x * 255.0f * ipw;
 	q->t1 = s_y * 255.0f * iph;
 
-	q->y0 += 14.0f;
+	q->y0 += (14.0f * scaling);
 
 	*xpos += b->xadvance * scale;
 }
@@ -173,11 +178,13 @@ int StrighWidthHires(char* string)
 	float width;
 	width = 0;
 
+	int spacing = (24 * gFontScale) / 4096;
+
 	while ((chr = *string++) != 0)
 	{
 		if (chr >= 128 && chr <= 138)
 		{
-			width += 24;
+			width += spacing;
 			continue;
 		}
 
@@ -209,6 +216,8 @@ int PrintStringHires(char* string, int x, int y)
 
 	SetHiresFontTexture(showMap);
 
+	int spacing = (24 * gFontScale) / 4096;
+
 	while ((chr = *string++) != 0)
 	{
 		if (chr >= 128 && chr <= 138)
@@ -221,8 +230,8 @@ int PrintStringHires(char* string, int x, int y)
 			if (showMap)
 				SetHiresFontTexture(1);
 
-			width += 24;
-			x += 24;
+			width += spacing;
+			x += spacing;
 			continue;
 		}
 
@@ -296,6 +305,8 @@ void PrintStringBoxedHires(char* string, int ix, int iy)
 	x = ix;
 	y = iy;
 
+	int spacing = (14 * gFontScale) / 4096;
+
 	while (*string)
 	{
 		string = GetNextWord(string, word);
@@ -303,7 +314,7 @@ void PrintStringBoxedHires(char* string, int ix, int iy)
 		if (x + StringWidth(word) > 308 && (wordcount != 1 || *string != 0))
 		{
 			x = ix;
-			y += 14;
+			y += spacing;
 		}
 
 		x = PrintStringHires(word, x, y);
@@ -361,6 +372,19 @@ short fontclutid = 0;
 char AsciiTable[256] = { 0 };
 OUT_FONTINFO fontinfo[128];
 
+void SetTextScale(int scale, int saveLastScale)
+{
+	if (saveLastScale)
+		gLastFontScale = gFontScale;
+
+	gFontScale = scale;
+}
+
+void ResetTextScale()
+{
+	gFontScale = gLastFontScale;
+}
+
 // [D] [T]
 void SetTextColour(u_char Red, u_char Green, u_char Blue)
 {
@@ -383,6 +407,9 @@ int StringWidth(char *pString)
 	int w;
 
 	w = 0;
+
+	int spacing = (24 * gFontScale) / 4096;
+	int whitespace = (gFontScale / 1024);
 	
 	while (true)
 	{
@@ -391,9 +418,9 @@ int StringWidth(char *pString)
 			break;
 	
 		if (let == 32)
-			w += 4;
+			w += whitespace;
 		else if ((let + 128 & 0xff) < 11) 
-			w += 24;
+			w += spacing;
 		else if (AsciiTable[let] != -1) 
 			w += fontinfo[AsciiTable[let]].width;
 	}
@@ -570,7 +597,7 @@ int PrintString(char *string, int x, int y)
 
 	while ((chr = *string++) != 0)
 	{
-		if (chr == 32)
+		if (chr == ' ')
 		{
 			width += 4;
 			continue;
@@ -655,19 +682,21 @@ short PrintDigit(int x, int y, char *string)
 
 	while ((chr = *string++) != 0)
 	{
-		if (chr == 58)
+		if (chr == ':')
 			index = 11;
-		else if (chr == 47) 
+		else if (chr == '/') 
 			index = 10;
 		else 
-			index = chr - 48 & 0xff;
+			index = chr - '0' & 0xff;
 
 		pDigit = &fontDigit[index];
 		
-		if (chr == 58) 
+		if (chr == ':') 
 			fixedWidth = 8;
 		else
 			fixedWidth = 16;
+
+		fixedWidth = (fixedWidth * gFontScale) / 4096;
 
 		if (index < 6) 
 		{
@@ -679,6 +708,8 @@ short PrintDigit(int x, int y, char *string)
 			vOff = 28;
 			h = 31;
 		}
+
+		h = (h * gFontScale) / 4096;
 
 		setSprt(font);
 		setSemiTrans(font, 1);
@@ -778,7 +809,7 @@ void PrintStringBoxed(char *string, int ix, int iy)
 		if (x + StringWidth(word) > 308 && (wordcount != 1 || *string != 0))
 		{
 			x = ix;
-			y += 14;
+			y += ((14 * gFontScale) / 4096);
 		}
 
 		wpt = word;
@@ -789,7 +820,7 @@ void PrintStringBoxed(char *string, int ix, int iy)
 		{
 			if (c == ' ') 
 			{
-				x += 4;
+				x += (gFontScale / 1024);
 				continue;
 			}
 
@@ -902,8 +933,12 @@ int PrintScaledString(int y, char *string, int scale)
 				height = 31;
 			}
 
+
 			y1 = (height / 2 * scale) / 16;
 			width = (pDigit->width * scale) / 16;
+
+			width = (width * gFontScale) / 4096;
+			height = (height * gFontScale) / 4096;
 
 			y0 = y - y1;
 			y1 = y + y1;
