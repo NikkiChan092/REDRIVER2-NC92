@@ -15,7 +15,6 @@ typedef struct _EXTRA_CIV_DATA
 extern const u_char speedLimits[3];
 extern unsigned char reservedSlots[MAX_CARS];
 extern int frameStart;
-extern char playerNum;
 
 extern int distFurthestCivCarSq;
 extern char furthestCivID;

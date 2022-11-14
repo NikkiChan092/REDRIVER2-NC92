@@ -11,7 +11,6 @@ extern short pedestrianFelony;
 extern short playerLastRoad; // Needed for speedometer
 extern int gP1SpeedingData; // Player 1's speeding data 
 //extern int gP2SpeedingData; // TODO
-//extern char PLID;
 
 extern FELONY_DATA felonyData;
 

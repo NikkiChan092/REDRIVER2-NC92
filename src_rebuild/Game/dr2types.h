@@ -441,7 +441,6 @@ struct COP
 	short frontLClear;
 	short frontRClear;
 	short batterTimer;	// [A] new gameplay feature
-	char chaseTarget; // 
 };
 
 struct LEAD_CAR

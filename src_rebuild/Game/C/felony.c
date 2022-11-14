@@ -295,10 +295,6 @@ void CheckPlayerMiscFelonies(void)
 	if (player[0].playerType == 2 || 
 		player[0].playerCarId < 0 || 
 		FelonyBar.active == 0)
-
-		if (player[1].playerType == 2 ||
-			player[1].playerCarId < 0 ||
-			Player2FelonyBar.active == 0)
 		return;
 
 	cp = &car_data[player[0].playerCarId];

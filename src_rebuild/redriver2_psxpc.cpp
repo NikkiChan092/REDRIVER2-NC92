@@ -574,7 +574,6 @@ int main(int argc, char** argv)
 		extern int gContentOverride;
 		int newScrZ = gCameraDefaultScrZ;
 		const char* dataFolderStr = ini_get(config, "fs", "dataFolder");
-		const char* userReplaysStr = ini_get(config, "game", "userChases");
 
 		// [A]
 		extern int gSpeedoType;
@@ -595,8 +594,6 @@ int main(int argc, char** argv)
 
 		if(!cdImageFileName)
 			cdImageFileName = ini_get(config, "cdfs", "image");
-
-		InitUserReplays(userReplaysStr);
 		
 		// configure Psy-X pads
 		ini_sget(config, "pad", "pad1device", "%d", &g_cfg_controllerToSlotMapping[0]);
@@ -615,7 +612,9 @@ int main(int argc, char** argv)
 
 		// configure host game
 		ini_sget(config, "game", "drawDistance", "%d", &gDrawDistance);
+#ifdef DYNAMIC_LIGHTING
 		ini_sget(config, "game", "dynamicLights", "%d", &gEnableDlights);
+#endif
 		ini_sget(config, "game", "disableChicagoBridges", "%d", &gDisableChicagoBridges);
 		ini_sget(config, "game", "fieldOfView", "%d", &newScrZ);
 		ini_sget(config, "game", "freeCamera", "%d", &enableFreecamera);

@@ -2132,7 +2132,6 @@ void FadeScreen(int end_value)
 void UpdatePlayerInformation(void)
 {
 	short* playerFelony;
-	short* playerFelony2;
 	WHEEL* wheel;
 	int i, j;
 	int wheelsInWater;
@@ -2149,16 +2148,10 @@ void UpdatePlayerInformation(void)
 	else
 		playerFelony = &car_data[player[0].playerCarId].felonyRating;
 
-	if (player[1].playerCarId < 0)
-		playerFelony2 = &pedestrianFelony;
-	else
-		playerFelony2 = &car_data[player[1].playerCarId].felonyRating;
-
 	if (gPlayerImmune != 0)
 		*playerFelony = 0;
 
 	FelonyBar.position = *playerFelony;
-	Player2FelonyBar.position = *playerFelony2;
 
 	for (i = 0; i < NumPlayers; i++)
 	{
