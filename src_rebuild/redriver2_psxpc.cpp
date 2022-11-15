@@ -38,6 +38,8 @@ bool CtrlModifier;
 bool ShiftModifier;
 bool AltModifier;
 
+int driver1music;
+
 void CheckModifierKeys(int nKey, bool down)
 {
 	switch (nKey)
@@ -137,6 +139,12 @@ void FreeCameraKeyboardHandler(int nKey, char down)
 	{
 		gCarReflectionMapping ^= 1;
 		printf("LightBeams: %s\n", g_FreeCameraEnabled ? "ON" : "OFF");
+	}
+
+	if (nKey == SDL_SCANCODE_M)
+	{
+		gDriver1Music ^= 1;
+		printf("changeMusic: %s\n", gDriver1Music ? "ON" : "OFF");
 	}
 }
 
