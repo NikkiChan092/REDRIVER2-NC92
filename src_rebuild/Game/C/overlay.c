@@ -62,6 +62,8 @@ int gDisplaySpeedo = 0; // 0 for no, 1 for Yes
 int gDisplayGears = 0; 
 int gDisplayRPM = 0; 
 
+int gPercentageBarTextSize = 0;
+
 extern int gMultiplayerLevels;
 extern short gCameraDefaultScrZ;
 
@@ -339,15 +341,28 @@ void DrawPercentageBar(PERCENTAGE_BAR *bar)
 
 	TransparencyOn(current->ot + 1, 0x20);
 
-	if (bar->tag != NULL)
-	{
-		SetTextColour(128, 128, 64);
+		if (bar->tag != NULL && gPercentageBarTextSize == 1)
+		{
+			SetTextScale(3096, 1);
+			SetTextColour(128, 128, 64);
 
-		if (bar->flags & 0x1)
-			PrintStringRightAligned(bar->tag, max_x - 8, min_y - 11);
-		else
-			PrintString(bar->tag, min_x + 8, min_y - 11);
-	}
+			if (bar->flags & 0x1)
+				PrintStringRightAligned(bar->tag, max_x - 8, min_y - 11);
+			else
+				PrintString(bar->tag, min_x + 8, min_y - 9);
+
+			ResetTextScale();
+		}
+	else
+		if (bar->tag != NULL)
+		{
+			SetTextColour(128, 128, 64);
+
+			if (bar->flags & 0x1)
+				PrintStringRightAligned(bar->tag, max_x - 8, min_y - 11);
+			else
+				PrintString(bar->tag, min_x + 8, min_y - 11);
+		}
 }
 
 // [D] [T]
@@ -487,15 +502,28 @@ void DrawProximityBar(PERCENTAGE_BAR *bar)
 
 	TransparencyOn(current->ot + 1, 0x20);
 
-	if (bar->tag != NULL)
+	if (bar->tag != NULL && gPercentageBarTextSize == 1)
 	{
+		SetTextScale(3096, 1);
 		SetTextColour(128, 128, 64);
 
-		if ((bar->flags & 1U) == 0)
-			PrintString(bar->tag, min_x + 8, min_y - 11);
-		else 
+		if (bar->flags & 0x1)
 			PrintStringRightAligned(bar->tag, max_x - 8, min_y - 11);
+		else
+			PrintString(bar->tag, min_x + 8, min_y - 9);
+
+		ResetTextScale();
 	}
+	else
+		if (bar->tag != NULL)
+		{
+			SetTextColour(128, 128, 64);
+
+			if (bar->flags & 0x1)
+				PrintStringRightAligned(bar->tag, max_x - 8, min_y - 11);
+			else
+				PrintString(bar->tag, min_x + 8, min_y - 11);
+		}
 }
 
 char OverlayFlashValue = 0;
@@ -712,8 +740,8 @@ void DrawGearDisplay(void)
 		int GearDisplay;
 		int GearSpeed;
 
-		int gGearOverlayXPos = gMapXOffset - 13;
-		int gGearOverlayYPos = gMapYOffset + 45;
+		int gGearOverlayXPos = gMapXOffset - 2;
+		int gGearOverlayYPos = gMapYOffset + 60;
 
 		// Multiplayer 
 		int gGearOverlayXPos2 = gMapXOffset - 13;
@@ -726,14 +754,14 @@ void DrawGearDisplay(void)
 
 
 		if (GearSpeed < 0)
-			sprintf(gearString, "R", gear);
+			sprintf(gearString, "R:Gear", gear);
 		else 
 			if (GearSpeed == 0)
-				sprintf(gearString, "N", gear);
+				sprintf(gearString, "N:Gear", gear);
 			else
-				sprintf(gearString, "%d", gear);
+				sprintf(gearString, "%d:Gear", gear);
 
-		SetTextScale(0xc00, 1);
+		SetTextScale(2500, 1);
 
 		SetTextColour(128, 128, 64);
 
@@ -776,12 +804,12 @@ void DrawGearDisplay2(void)
 
 
 		if (GearSpeed < 0)
-			sprintf(gearString, "R", gear);
+			sprintf(gearString, "Gear:R", gear);
 		else
 			if (GearSpeed == 0)
-				sprintf(gearString, "N", gear);
+				sprintf(gearString, "Gear:N", gear);
 			else
-				sprintf(gearString, "%d", gear);
+				sprintf(gearString, "Gear:%d", gear);
 
 		SetTextColour(128, 128, 64);
 
@@ -810,8 +838,8 @@ void DrawRPMDisplay(void)
 		int RPMMax;
 		int RPMDisplay;
 
-		int gRPMOverlayXPos = gMapXOffset - 65;
-		int gRPMOverlayYPos = gMapYOffset + 57;
+		int gRPMOverlayXPos = gMapXOffset - 47;
+		int gRPMOverlayYPos = gMapYOffset + 60;
 
 		RPMMax = cp->hd.revs / 3.5;
 		RPMMin = 600;
@@ -821,7 +849,7 @@ void DrawRPMDisplay(void)
 		
 		sprintf(RPMString, "%d:Rpm", RPM);
 
-		SetTextScale(0xc00, 1);
+		SetTextScale(2500, 1);
 
 		SetTextColour(128, 128, 64);
 
@@ -859,8 +887,8 @@ void DrawSpeedometer(void)
 		int WheelSpeed;
 
 		// Singleplayer
-		int gSpeedoOverlayXPos = gMapXOffset + 7;
-		int gSpeedoOverlayYPos = gMapYOffset + 57;
+		int gSpeedoOverlayXPos = gMapXOffset + 30; // higher moves right, lower left
+		int gSpeedoOverlayYPos = gMapYOffset + 60; // higher moves down
 
 		// Multiplayer 
 		int gSpeedoOverlayXPos2 = gMapXOffset + 7;
@@ -880,7 +908,7 @@ void DrawSpeedometer(void)
 
 		int speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
 
-		SetTextScale(0xc00, 1);
+		SetTextScale(2500, 1);
 
 		if (FIXEDH(WheelSpeed) > gP1SpeedingData && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
 			SetTextColour(255, speedoFlash, speedoFlash); // Red and white

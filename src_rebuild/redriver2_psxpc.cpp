@@ -599,6 +599,8 @@ int main(int argc, char** argv)
 		extern int gSpriteShadowDist;
 		extern int gCarReflectionMapping;
 		extern int gColorCodedCopIndicators;
+		extern int gPercentageBarTextSize;
+		extern int gFontScale;
 
 		if(!cdImageFileName)
 			cdImageFileName = ini_get(config, "cdfs", "image");
@@ -644,6 +646,8 @@ int main(int argc, char** argv)
 		ini_sget(config, "extras", "DigitChoice", "%d", &gDigitChoice);
 		ini_sget(config, "extras", "CarReflection", "%d", &gCarReflectionMapping);
 		ini_sget(config, "extras", "ColoredCopIndicators", "%d", &gColorCodedCopIndicators);
+		ini_sget(config, "extras", "PercentageBarTextSize", "%d", &gPercentageBarTextSize);
+		ini_sget(config, "extras", "GlobalTextSize", "%d", &gFontScale);
 
 		// LODS 
 		ini_sget(config, "extras", "EnvLODDist", "%d", &gHighLODDistance);

@@ -34,6 +34,7 @@ extern int gSpeedoType;
 extern int gDisplaySpeedo;
 extern int gDisplayGears;
 extern int gDisplayRPM;
+extern int gPercentageBarTextSize;
 
 extern int gOverlayXPos;
 extern int gOverlayXOppPos;
