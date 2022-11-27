@@ -733,12 +733,16 @@ void DrawGearDisplay(void)
 			else
 				sprintf(gearString, "%d", gear);
 
+		SetTextScale(0xc00, 1);
+
 		SetTextColour(128, 128, 64);
 
 		if (NumPlayers == 2)
 			PrintString(gearString, gGearOverlayXPos2, gGearOverlayYPos2);
 		else
 			PrintString(gearString, gGearOverlayXPos, gGearOverlayYPos);
+
+		ResetTextScale();
 	}
 }
 
@@ -817,9 +821,13 @@ void DrawRPMDisplay(void)
 		
 		sprintf(RPMString, "%d:Rpm", RPM);
 
+		SetTextScale(0xc00, 1);
+
 		SetTextColour(128, 128, 64);
 
 		PrintString(RPMString, gRPMOverlayXPos, gRPMOverlayYPos);
+
+		ResetTextScale();
 	}
 }
 
