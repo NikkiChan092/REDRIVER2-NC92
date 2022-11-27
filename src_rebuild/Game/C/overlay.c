@@ -872,7 +872,7 @@ void DrawSpeedometer(void)
 
 		int speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
 
-		//SetTextScale(0xc00, 1);
+		SetTextScale(0xc00, 1);
 
 		if (FIXEDH(WheelSpeed) > gP1SpeedingData && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
 			SetTextColour(255, speedoFlash, speedoFlash); // Red and white
@@ -884,6 +884,8 @@ void DrawSpeedometer(void)
 			PrintString(string, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2);
 		else
 			PrintString(string, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
+
+		ResetTextScale();
 	}
 }
 

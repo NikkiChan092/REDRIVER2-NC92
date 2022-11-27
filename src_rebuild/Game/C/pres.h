@@ -17,6 +17,9 @@ extern short fonttpage;
 extern int gTextureChoice;
 extern int gDigitChoice;
 
+extern int gFontScale;
+extern int gLastFontScale;
+
 extern void InitButtonTextures(); // 0x00074E54
 
 extern void LoadFont(char *buffer); // 0x00073CC8
