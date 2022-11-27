@@ -680,8 +680,6 @@ short PrintDigit(int x, int y, char *string)
 	width = x;
 	font = (SPRT *)current->primptr;
 
-	SetTextScale(4096, 1);
-
 	while ((chr = *string++) != 0)
 	{
 		if (chr == ':')

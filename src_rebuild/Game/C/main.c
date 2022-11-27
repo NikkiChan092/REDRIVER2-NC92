@@ -1779,8 +1779,8 @@ int redriver2_main(int argc, char** argv)
 	};
 
 	char* NTSCScreenNames[4] = {		// [A] don't show publisher logo
-	//	"GFX\\SPLASH2.TIM",
-		//"GFX\\SPLASH3.TIM",
+		"GFX\\SPLASH2.TIM",
+		"GFX\\SPLASH3.TIM",
 		"GFX\\SPLASH1N.TIM",
 		NULL
 	};
