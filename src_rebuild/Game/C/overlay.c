@@ -870,7 +870,9 @@ void DrawSpeedometer(void)
 		else
 			sprintf(string, "%d:Mph", mph);
 
-		int speedoFlash = CameraCnt * 15; // flash speed for the speedometer
+		int speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
+
+		//SetTextScale(0xc00, 1);
 
 		if (FIXEDH(WheelSpeed) > gP1SpeedingData && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
 			SetTextColour(255, speedoFlash, speedoFlash); // Red and white
@@ -981,7 +983,7 @@ void DrawSpeedometer2(void)
 		else
 			limit = (maxSpeed * 3) >> 1;
 
-		int speedoFlash = CameraCnt * 15; // flash speed for the speedometer
+		int speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
 
 		if (FIXEDH(WheelSpeed) > limit && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
 			SetTextColour(255, speedoFlash, speedoFlash); // Red and white
