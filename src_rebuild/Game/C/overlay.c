@@ -67,6 +67,8 @@ int gPercentageBarTextSize = 0;
 extern int gMultiplayerLevels;
 extern short gCameraDefaultScrZ;
 
+extern const u_char speedLimits[3];
+
 
 // [D] [T]
 void PrintScoreTableTime(int x, int y, int time)
@@ -746,7 +748,7 @@ void DrawGearDisplay(void)
 		int GearDisplay;
 		int GearSpeed;
 
-		int gGearOverlayXPos = gMapXOffset - 2;
+		int gGearOverlayXPos = gMapXOffset + 30;
 		int gGearOverlayYPos = gMapYOffset + 60;
 
 		// Multiplayer 
@@ -767,14 +769,14 @@ void DrawGearDisplay(void)
 			else
 				sprintf(gearString, "%d:Gear", gear);
 
-		SetTextScale(2500, 1);
+		SetTextScale(2000, 1);
 
 		SetTextColour(128, 128, 64);
 
 		if (NumPlayers == 2)
 			PrintString(gearString, gGearOverlayXPos2, gGearOverlayYPos2);
 		else
-			PrintString(gearString, gGearOverlayXPos, gGearOverlayYPos);
+			PrintStringRightAligned(gearString, gGearOverlayXPos, gGearOverlayYPos);
 
 		ResetTextScale();
 	}
@@ -784,6 +786,7 @@ void DrawGearDisplay(void)
 void DrawGearDisplay2(void)
 {
 	//Gear Display
+	// TODO: Improve for Multiplayer
 	{
 		int player_id = 0;
 		CAR_DATA* cp;
@@ -844,7 +847,7 @@ void DrawRPMDisplay(void)
 		int RPMMax;
 		int RPMDisplay;
 
-		int gRPMOverlayXPos = gMapXOffset - 47;
+		int gRPMOverlayXPos = gMapXOffset + 0;
 		int gRPMOverlayYPos = gMapYOffset + 60;
 
 		RPMMax = cp->hd.revs / 3.5;
@@ -855,11 +858,11 @@ void DrawRPMDisplay(void)
 		
 		sprintf(RPMString, "%d:Rpm", RPM);
 
-		SetTextScale(2500, 1);
+		SetTextScale(2000, 1);
 
 		SetTextColour(128, 128, 64);
 
-		PrintString(RPMString, gRPMOverlayXPos, gRPMOverlayYPos);
+		PrintStringRightAligned(RPMString, gRPMOverlayXPos, gRPMOverlayYPos);
 
 		ResetTextScale();
 	}
@@ -893,7 +896,7 @@ void DrawSpeedometer(void)
 		int WheelSpeed;
 
 		// Singleplayer
-		int gSpeedoOverlayXPos = gMapXOffset + 30; // higher moves right, lower left
+		int gSpeedoOverlayXPos = gMapXOffset + 64; // higher moves right, lower left
 		int gSpeedoOverlayYPos = gMapYOffset + 60; // higher moves down
 
 		// Multiplayer 
@@ -914,18 +917,17 @@ void DrawSpeedometer(void)
 
 		int speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
 
-		SetTextScale(2500, 1);
+		SetTextScale(2000, 1);
 
-		if (FIXEDH(WheelSpeed) > gP1SpeedingData && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
+		if (FIXEDH(WheelSpeed) > gP1SpeedingData && gPlayerImmune == 0)
 			SetTextColour(255, speedoFlash, speedoFlash); // Red and white
-			//SetColourByValue();
 		else
 			SetTextColour(255, 255, 255);
 
 		if (NumPlayers == 2)
-			PrintString(string, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2);
+			PrintString(string, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2); // toDo, fix later for MP
 		else
-			PrintString(string, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
+			PrintStringRightAligned(string, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
 
 		ResetTextScale();
 	}
@@ -935,6 +937,7 @@ void DrawSpeedometer(void)
 void DrawSpeedometer2(void)
 {
 	// Speedometer
+	// TODO: Improve later for Multiplayer
 	{
 		int player_id = 1;
 		CAR_DATA* cp;
