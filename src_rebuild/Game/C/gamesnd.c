@@ -328,9 +328,9 @@ void LoadLevelSFX(int missionNum)
 	else
 		LoadBankFromLump(SOUND_BANK_VOICES, SBK_COP_SIREN_START + (GameLevel & 3));
 
-	// Load cop voices except those missions
+	// Load cop voices except those missions // Mission 12 was a cut mission
 	if (missionNum - 1U > 3 && missionNum != 6 && missionNum != 7 &&
-		missionNum != 9 && missionNum != 10 && missionNum != 11 &&
+		missionNum != 9 && missionNum != 10 && missionNum != 11 && missionNum != 12 &&
 		missionNum != 13 && missionNum != 14 && missionNum != 18 &&
 		missionNum != 19 && missionNum != 20 && missionNum != 22 &&
 		missionNum != 26 && missionNum != 28 && missionNum != 31 &&
