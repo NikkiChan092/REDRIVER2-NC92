@@ -741,7 +741,6 @@ void DrawGearDisplay(void)
 		PLAYER* lp;
 
 		lp = &player[player_id];
-		//cp = &car_data[lp->cameraCarId];
 		cp = &car_data[player[0].playerCarId];
 
 		char gearString[32];
@@ -793,12 +792,11 @@ void DrawGearDisplay2(void)
 		PLAYER* lp;
 
 		lp = &player[player_id];
-		//cp = &car_data[lp->cameraCarId];
 		cp = &car_data[player[1].playerCarId];
 
-		char gearString[32];
-		int GearDisplay;
-		int GearSpeed;
+		char P2_gearString[32];
+		int P2_GearDisplay;
+		int P2_GearSpeed;
 
 		int gGearOverlay2XPos = gMapXOffset - 13;
 		int gGearOverlay2YPos = gMapYOffset + 134;
@@ -806,26 +804,26 @@ void DrawGearDisplay2(void)
 		int gGearOverlay2XPos2 = gMapXOffset - 13;
 		int gGearOverlay2YPos2 = gMapYOffset + 160;
 
-		GearDisplay = cp->hd.gear + 1;
-		GearSpeed = cp->hd.wheel_speed;
+		P2_GearDisplay = cp->hd.gear + 1;
+		P2_GearSpeed = cp->hd.wheel_speed;
 
-		int gear = GearDisplay;
+		int P2gear = P2_GearDisplay;
 
 
-		if (GearSpeed < 0)
-			sprintf(gearString, "Gear:R", gear);
+		if (P2_GearSpeed < 0)
+			sprintf(P2_gearString, "Gear:R", P2gear);
 		else
-			if (GearSpeed == 0)
-				sprintf(gearString, "Gear:N", gear);
+			if (P2_GearSpeed == 0)
+				sprintf(P2_gearString, "Gear:N", P2gear);
 			else
-				sprintf(gearString, "Gear:%d", gear);
+				sprintf(P2_gearString, "Gear:%d", P2gear);
 
 		SetTextColour(128, 128, 64);
 
 		if (NumPlayers == 2 && gMultiplayerLevels == 0)
-			PrintString(gearString, gGearOverlay2XPos2, gGearOverlay2YPos2);
+			PrintString(P2_gearString, gGearOverlay2XPos2, gGearOverlay2YPos2);
 		else
-			PrintString(gearString, gGearOverlay2XPos, gGearOverlay2YPos);
+			PrintString(P2_gearString, gGearOverlay2XPos, gGearOverlay2YPos);
 	}
 }
 
@@ -877,23 +875,12 @@ void DrawSpeedometer(void)
 		CAR_DATA* cp;
 		PLAYER* lp;
 		int i;
-		bool goingWrongWay;
-		int surfInd;
-		int maxSpeed;
-		int limit;
-		int exitId;
-		int _exitId;
-		VECTOR* carPos;
-		DRIVER2_ROAD_INFO roadInfo;
-		DRIVER2_JUNCTION* jn;
 
 		lp = &player[player_id];
-		//cp = &car_data[lp->cameraCarId];
 		cp = &car_data[player[0].playerCarId];
-		carPos = (VECTOR*)cp->hd.where.t;
 
-		char string[32];
-		int WheelSpeed;
+		char SpeedoString[32];
+		int P1_WheelSpeed;
 
 		// Singleplayer
 		int gSpeedoOverlayXPos = gMapXOffset + 64; // higher moves right, lower left
@@ -903,31 +890,30 @@ void DrawSpeedometer(void)
 		int gSpeedoOverlayXPos2 = gMapXOffset + 7;
 		int gSpeedoOverlayYPos2 = gMapYOffset - 16;
 
-		WheelSpeed = cp->hd.wheel_speed;
+		P1_WheelSpeed = cp->hd.wheel_speed;
 
 
-		int kph = WheelSpeed / 6161;
-		int mph = WheelSpeed / 9989;
+		int kph = P1_WheelSpeed / 6161;
+		int mph = P1_WheelSpeed / 9989;
 
 		if (gSpeedoType == 0) 
-		//if (GameLevel == 1 || GameLevel == 3)
-			sprintf(string, "%d:Km/h", kph);
+			sprintf(SpeedoString, "%d:Km/h", kph);
 		else
-			sprintf(string, "%d:Mph", mph);
+			sprintf(SpeedoString, "%d:Mph", mph);
 
-		int speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
+		int P1speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
 
 		SetTextScale(2000, 1);
 
-		if (FIXEDH(WheelSpeed) > gP1SpeedingData && gPlayerImmune == 0)
-			SetTextColour(255, speedoFlash, speedoFlash); // Red and white
+		if (FIXEDH(P1_WheelSpeed) > gP1SpeedingData && gPlayerImmune == 0)
+			SetTextColour(255, P1speedoFlash, P1speedoFlash); // Red and white
 		else
 			SetTextColour(255, 255, 255);
 
 		if (NumPlayers == 2)
-			PrintString(string, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2); // toDo, fix later for MP
+			PrintString(SpeedoString, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2); // toDo, fix later for MP
 		else
-			PrintStringRightAligned(string, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
+			PrintStringRightAligned(SpeedoString, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
 
 		ResetTextScale();
 	}
@@ -943,23 +929,12 @@ void DrawSpeedometer2(void)
 		CAR_DATA* cp;
 		PLAYER* lp;
 		int i;
-		bool goingWrongWay;
-		int surfInd;
-		int maxSpeed;
-		int limit;
-		int exitId;
-		int _exitId;
-		VECTOR* carPos;
-		DRIVER2_ROAD_INFO roadInfo;
-		DRIVER2_JUNCTION* jn;
 
 		lp = &player[player_id];
-		//cp = &car_data[lp->cameraCarId];
 		cp = &car_data[player[1].playerCarId];
-		carPos = (VECTOR*)cp->hd.where.t;
 
-		char string[32];
-		int WheelSpeed;
+		char P2SpeedoString[32];
+		int P2_WheelSpeed;
 
 		int gSpeedoOverlayXPos = gMapXOffset + 7;
 		int gSpeedoOverlayYPos = gMapYOffset + 134;
@@ -967,81 +942,28 @@ void DrawSpeedometer2(void)
 		int gSpeedoOverlayXPos2 = gMapXOffset + 7;
 		int gSpeedoOverlayYPos2 = gMapYOffset + 160;
 
-		WheelSpeed = cp->hd.wheel_speed;
+		P2_WheelSpeed = cp->hd.wheel_speed;
 
 
-		int kph = WheelSpeed / 6161;
-		int mph = WheelSpeed / 9989;
+		int kph = P2_WheelSpeed / 6161;
+		int mph = P2_WheelSpeed / 9989;
 
 		if (gSpeedoType == 0)
-			//if (GameLevel == 1 || GameLevel == 3)
-			sprintf(string, "%d:Km/h", kph);
+			sprintf(P2SpeedoString, "%d:Km/h", kph);
 		else
-			sprintf(string, "%d:Mph", mph);
+			sprintf(P2SpeedoString, "%d:Mph", mph);
 
-		//Fetch the road speed limits and update. Mostly ported from felony.c. TODO: Clean up like P1
-		surfInd = GetSurfaceIndex(carPos);
+		int P2speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
 
-		// check junctions
-		if (IS_JUNCTION_SURFACE(surfInd))
-		{
-			jn = GET_JUNCTION(surfInd);
-
-			if ((IS_CURVED_SURFACE(playerLastRoad) || IS_STRAIGHT_SURFACE(playerLastRoad)) && (jn->flags & 0x1))
-			{
-				exitId = 0;
-				i = 0;
-				while (i < 4)
-				{
-					if (jn->ExitIdx[i] == playerLastRoad)
-					{
-						exitId = i;
-						break;
-					}
-					i++;
-				}
-			}
-		}
-		playerLastRoad = surfInd;
-
-		// get road speed limit
-		if (GetSurfaceRoadInfo(&roadInfo, surfInd))
-		{
-			int lane;
-			int crd;
-
-			lane = GetLaneByPositionOnRoad(&roadInfo, carPos);
-
-			if (roadInfo.straight)
-				crd = (roadInfo.straight->angle - cp->hd.direction) + 1024U >> 0xb & 1;
-			else
-				crd = NotTravellingAlongCurve(carPos->vx, carPos->vz, cp->hd.direction, roadInfo.curve);
-
-
-			maxSpeed = speedLimits[ROAD_SPEED_LIMIT(&roadInfo)];
-		}
-		else
-		{
-			maxSpeed = speedLimits[2];
-		}
-
-		if (speedLimits[2] == maxSpeed)
-			limit = (maxSpeed * 19) >> 4;
-		else
-			limit = (maxSpeed * 3) >> 1;
-
-		int speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
-
-		if (FIXEDH(WheelSpeed) > limit && /*cp->felonyRating < 0x294 && CopsAllowed != 0 &&*/ gPlayerImmune == 0)
-			SetTextColour(255, speedoFlash, speedoFlash); // Red and white
-			//SetColourByValue();
+		if (FIXEDH(P2_WheelSpeed) > gP2SpeedingData && gPlayerImmune == 0)
+			SetTextColour(255, P2speedoFlash, P2speedoFlash); // Red and white
 		else
 			SetTextColour(255, 255, 255);
 
 		if (NumPlayers == 2 && gMultiplayerLevels == 0)
-			PrintString(string, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2);
+			PrintString(P2SpeedoString, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2);
 		else
-			PrintString(string, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
+			PrintString(P2SpeedoString, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
 	}
 }
 

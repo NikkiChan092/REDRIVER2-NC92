@@ -43,7 +43,7 @@ int FelonyIncreaseTimer = 0;
 int FelonyDecreaseTimer = 0;
 
 int gP1SpeedingData = 0; // For Player 1
-//int gP2SpeedingData = 0; // TODO
+int gP2SpeedingData = 0; // TODO
 
 
 // [D] [T]
@@ -418,6 +418,7 @@ void CheckPlayerMiscFelonies(void)
 		NoteFelony(&felonyData, 2, 4096);
 
 	gP1SpeedingData = limit;
+	gP2SpeedingData = limit;
 }
 
 // [D] [T]
