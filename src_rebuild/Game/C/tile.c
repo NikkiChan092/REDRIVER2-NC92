@@ -234,7 +234,8 @@ void DrawTILES(PACKED_CELL_OBJECT** tiles, int tile_amount)
 		{
 #ifdef DYNAMIC_LIGHTING
 			int t;
-			t = gEnableDlights == 1; // Make it all cities? :D 
+			//t = gEnableDlights == 1; // Make it all cities? :D 
+			t = GameLevel == 0 || GameLevel == 1 || GameLevel == 3 && gEnableDlights == 1;
 			plotContext.colour = fst_div_lut_3_5(combo >> 16 & 255, t) << 16 | fst_div_lut_3_5(combo >> 8 & 255, t) << 8 | fst_div_lut_3_5(combo & 255, t) | 0x2C000000U;
 #else
 			plotContext.colour = fst_div_3(combo >> 16 & 255) << 16 | fst_div_3(combo >> 8 & 255) << 8 | fst_div_3(combo & 255) | 0x2C000000U;

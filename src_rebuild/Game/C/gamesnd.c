@@ -330,7 +330,7 @@ void LoadLevelSFX(int missionNum)
 
 	// Load cop voices except those missions
 	if (missionNum - 1U > 3 && missionNum != 6 && missionNum != 7 &&
-		missionNum != 9 && missionNum != 10 && missionNum != 11 &&
+		missionNum != 9 && missionNum != 10 && missionNum != 11 && missionNum != 12 &&
 		missionNum != 13 && missionNum != 14 && missionNum != 18 &&
 		missionNum != 19 && missionNum != 20 && missionNum != 22 &&
 		missionNum != 26 && missionNum != 28 && missionNum != 31 &&
@@ -493,7 +493,7 @@ void LoadLevelSFX(int missionNum)
 	// disable cop speech on specific missions (gangs)
 	// and set cop model (car sound bank)
 	if (missionNum == 7 || missionNum == 9 ||
-		missionNum == 11 || missionNum == 20 ||
+		missionNum == 11 || missionNum == 12 || missionNum == 20 ||
 		missionNum == 26 || missionNum == 31 ||
 		missionNum == 33 || missionNum == 40)
 	{

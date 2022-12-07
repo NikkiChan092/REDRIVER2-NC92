@@ -43,7 +43,7 @@ int FelonyIncreaseTimer = 0;
 int FelonyDecreaseTimer = 0;
 
 int gP1SpeedingData = 0; // For Player 1
-int gP2SpeedingData = 0; // TODO
+int gP2SpeedingData = 0; // For Player 2
 
 
 // [D] [T]
