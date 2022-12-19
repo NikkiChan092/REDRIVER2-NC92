@@ -9,20 +9,28 @@ extern int gShowMap;
 #ifndef PSX
 
 #define STB_TRUETYPE_IMPLEMENTATION
-#include "../utils/stb_truetype.h"
+#include "PsyX/PsyX_render.h"
 #include "../utils/targa.h"
+#include "../utils/hqfont.h"
 
 #include "PsyX/PsyX_render.h"
 #define HIRES_FONTS
-#define HIRES_FONT_SIZE_W 768
-#define HIRES_FONT_SIZE_H 512
+
+struct FONT_QUAD
+{
+	float x0, y0, s0, t0; // top-left
+	float x1, y1, s1, t1; // bottom-right
+};
 
 TextureID gHiresFontTexture = 0;
 TextureID gHiresDigitsTexture = 0;
 
 int gTextureChoice = 0; 
 int gDigitChoice = 0;
-stbtt_packedchar gSTBCharData[224];	// ASCII 32..126 is 95 glyphs
+
+OUT_FN2RANGE gHiresFontRanges[4];
+OUT_FN2INFO gHiresFontCharData[4][224];
+int gHiresFontRangeCount = 0;
 
 int gFontScale = 4096;
 int gLastFontScale = 4096;
@@ -49,55 +57,51 @@ void InitHiresFonts()
 				gHiresDigitsTexture = GR_CreateRGBATexture(width, height, data);
 			}
 			free(data);
+			data = NULL;
 		}
 	}
 
 	// init font2
 	if(!gHiresFontTexture)
 	{
+		gHiresFontRangeCount = 0;
+
+		int width, height, bpp;
 		int x, y;
 		int size;
 		FILE* fp;
 
 		if (gTextureChoice == 1)
-		sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\HQ\\ariblk.ttf");
-	else
-		if (gTextureChoice == 2)
-		sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\HQ\\ariblk_D1.ttf");
+			sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\HQ\\font2.fn2");
 
 		fp = fopen(namebuffer, "rb");
 		if (fp) 
 		{
-			// read whole file
-			fseek(fp, 0, SEEK_END);
-			size = ftell(fp);
-			fseek(fp, 0, SEEK_SET);
-			data = (u_char*)malloc(size);
-			fread(data, 1, size, fp);
-			fclose(fp);
+			int i;
 
-			// gen font
-			u_char* tmpBitmap = (u_char*)malloc(HIRES_FONT_SIZE_W * HIRES_FONT_SIZE_H);
-			u_int* bitmapRGBA = (u_int*)malloc(HIRES_FONT_SIZE_W * HIRES_FONT_SIZE_H * 4);
+			// read fn2 step by step
+			OUT_FN2HEADER fn2hdr;
+			fread(&fn2hdr, sizeof(fn2hdr), 1, fp);
 
-			stbtt_pack_context pc;
-
-			stbtt_PackBegin(&pc, tmpBitmap, HIRES_FONT_SIZE_W, HIRES_FONT_SIZE_H, 0, 1, NULL);
-			stbtt_PackSetOversampling(&pc, 2, 2);
-			stbtt_PackFontRange(&pc, data, 0, 40.0f, 32, 224, gSTBCharData);
-			stbtt_PackEnd(&pc);
-
-			for (x = 0; x < HIRES_FONT_SIZE_W; ++x)
+			gHiresFontRangeCount = fn2hdr.range_count;
+			for (i = 0; i < fn2hdr.range_count; ++i)
 			{
-				for (y = 0; y < HIRES_FONT_SIZE_H; ++y)
-				{
-					bitmapRGBA[x + y * HIRES_FONT_SIZE_W] = tmpBitmap[x + y * HIRES_FONT_SIZE_W] << 24 | 0xffffff;
-				}
+				fread(&gHiresFontRanges[i], sizeof(gHiresFontRanges[i]), 1, fp);
+				fread(gHiresFontCharData[i], sizeof(OUT_FN2INFO), gHiresFontRanges[i].count, fp);
 			}
+			fclose(fp);
+		}
+			
+			
+		// load TGA file
+		sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\HQ\\font2.tga");
+		if (LoadTGAImage(namebuffer, &data, width, height, bpp))
+		{
+			if (bpp == 32)
 
-			gHiresFontTexture = GR_CreateRGBATexture(HIRES_FONT_SIZE_W, HIRES_FONT_SIZE_H, (u_char*)bitmapRGBA);
-			free(bitmapRGBA);
-			free(tmpBitmap);
+			{
+				gHiresFontTexture = GR_CreateRGBATexture(HIRES_FONT_SIZE_W, HIRES_FONT_SIZE_H, data);
+			}
 			free(data);
 		}
 	}
@@ -144,15 +148,16 @@ void SetHiresDigitsTexture(int enabled)
 	current->primptr += sizeof(DR_PSYX_TEX);
 }
 
-void GetHiresBakedQuad(int char_index, float* xpos, float* ypos, stbtt_aligned_quad* q)
+void GetHiresBakedQuad(int char_index, float* xpos, float* ypos, FONT_QUAD* q)
 {
 	float ipw = 1.0f / (float)HIRES_FONT_SIZE_W;
 	float iph = 1.0f / (float)HIRES_FONT_SIZE_H;
-	const stbtt_packedchar* b = gSTBCharData + char_index;
+
+	const OUT_FN2INFO* b = gHiresFontCharData[0] + char_index - gHiresFontRanges[0].start;
 
 	float scaling = gFontScale / 4096.f;
 
-	float scale = 0.45f * scaling;
+	float scale = 0.275f * scaling;
 
 	float s_x = b->x1 - b->x0;
 	float s_y = b->y1 - b->y0;
@@ -193,8 +198,8 @@ int StrighWidthHires(char* string)
 		float fx, fy;
 		fx = 0.0f;
 		fy = 0.0f;
-		stbtt_aligned_quad q;
-		GetHiresBakedQuad(chr - 32, &fx, &fy, &q);
+		FONT_QUAD q;
+		GetHiresBakedQuad(chr, &fx, &fy, &q);
 		width += fx;
 	}
 	return width;
@@ -242,8 +247,8 @@ int PrintStringHires(char* string, int x, int y)
 		float fx, fy;
 		fx = width;
 		fy = y;
-		stbtt_aligned_quad q;
-		GetHiresBakedQuad(chr - 32, &fx, &fy, &q);
+		FONT_QUAD q;
+		GetHiresBakedQuad(chr, &fx, &fy, &q);
 
 		fontFT4 = (POLY_FT4*)current->primptr;
 
