@@ -747,7 +747,7 @@ void DrawGearDisplay(void)
 		int GearDisplay;
 		int GearSpeed;
 
-		int gGearOverlayXPos = gMapXOffset + 30;
+		int gGearOverlayXPos = gMapXOffset + 20;
 		int gGearOverlayYPos = gMapYOffset + 60;
 
 		// Multiplayer 
@@ -768,7 +768,7 @@ void DrawGearDisplay(void)
 			else
 				sprintf(gearString, "%d:Gear", gear);
 
-		SetTextScale(2000, 1);
+		SetTextScale(2250, 1);
 
 		SetTextColour(128, 128, 64);
 
@@ -845,7 +845,7 @@ void DrawRPMDisplay(void)
 		int RPMMax;
 		int RPMDisplay;
 
-		int gRPMOverlayXPos = gMapXOffset + 0;
+		int gRPMOverlayXPos = gMapXOffset - 14;
 		int gRPMOverlayYPos = gMapYOffset + 60;
 
 		RPMMax = cp->hd.revs / 3.5;
@@ -856,7 +856,7 @@ void DrawRPMDisplay(void)
 		
 		sprintf(RPMString, "%d:Rpm", RPM);
 
-		SetTextScale(2000, 1);
+		SetTextScale(2250, 1);
 
 		SetTextColour(128, 128, 64);
 
@@ -903,7 +903,7 @@ void DrawSpeedometer(void)
 
 		int P1speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
 
-		SetTextScale(2000, 1);
+		SetTextScale(2250, 1);
 
 		if (FIXEDH(P1_WheelSpeed) > gP1SpeedingData && gPlayerImmune == 0)
 			SetTextColour(255, P1speedoFlash, P1speedoFlash); // Red and white
