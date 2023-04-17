@@ -1401,7 +1401,7 @@ void MangleWheelModels(void)
 			src++;
 		}
 
-	} while (++i < 3);
+	}
 
 	// HACK: Show clean model only in Rio.
 	//if (GameLevel == 3) 
@@ -1435,24 +1435,23 @@ void ProcessPalletLump(char *lump_ptr, int lump_size)
 		texnum = buffPtr[1];
 		tpageindex = buffPtr[2];
 		clut_number = buffPtr[3];
+		buffPtr += 4;
 
 		if (clut_number == -1)
 		{
 			// store clut
-			LoadImage(&clutpos, (u_long*)(buffPtr + 4));
+			LoadImage(&clutpos, (u_long*)buffPtr);
+			buffPtr += 8;
 
 			clutValue = GetClut(clutpos.x, clutpos.y);
-			*clutTablePtr++ = clutValue;
-
 			IncrementClutNum(&clutpos);
 
-			buffPtr += 12;
+			*clutTablePtr++ = clutValue;			
 		}
 		else
 		{
 			// use stored clut
 			clutValue = clutTable[clut_number];
-			buffPtr += 4;
 		}
 
 		civ_clut[GetCarPalIndex(tpageindex)][texnum][palette + 1] = clutValue;
