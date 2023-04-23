@@ -95,6 +95,8 @@ void InitHiresFonts()
 			
 		// load TGA file
 		sprintf(namebuffer, "%s%s", gDataFolder, "GFX\\HQ\\font2.tga");
+		FS_FixPathSlashes(namebuffer);
+
 		if (LoadTGAImage(namebuffer, &data, width, height, bpp))
 		{
 			if (bpp == 32)
