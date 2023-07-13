@@ -153,19 +153,17 @@ void InitOverlays(void)
 }
 
 // [D] [T]
-void SetFullscreenDrawing(void)
+void SetFullscreenDrawing(int ofs)
 {
 	DR_ENV *drenv;
 	DRAWENV drawenv;
 
-	drenv = (DR_ENV *)current->primptr;
-
 	drawenv.clip.x = 256;
 	SetDefDrawEnv(&drawenv, 0, current->draw.clip.y & 256, 320, 256);
 
+	drenv = (DR_ENV*)current->primptr;
 	SetDrawEnv(drenv, &drawenv);
-
-	addPrim(current->ot + 2, drenv);
+	addPrim(current->ot + ofs, drenv);
 	current->primptr += sizeof(DR_ENV);
 }
 
@@ -1087,6 +1085,14 @@ void DisplayOverlays(void)
 #endif
 
 	
+
+	if (NumPlayers > 1)
+	{
+		if (CurrentPlayerView == 0)
+			return;
+
+		SetFullscreenDrawing(2);
+	}
 
 	UpdateFlashValue();
 
