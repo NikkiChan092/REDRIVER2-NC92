@@ -1037,7 +1037,7 @@ void DisplayOverlays(void)
 	}
 	else
 	{
-		SetFullscreenDrawing();
+		SetFullscreenDrawing(2);
 	}
 
 	if (NumPlayers == 2 && gMultiplayerLevels == 0)
