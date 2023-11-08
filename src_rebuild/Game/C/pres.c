@@ -231,11 +231,15 @@ int PrintStringHires(char* string, int x, int y)
 		{
 			if(showMap)
 				SetHiresFontTexture(0);
+			else
+				SetHiresFontTexture(1);
 
-			DrawButton(chr, current->primptr, width, y);
+			current->primptr = (char*)DrawButton(chr, current->primptr, width, y);
 
 			if (showMap)
 				SetHiresFontTexture(1);
+			else
+				SetHiresFontTexture(0);
 
 			width += spacing;
 			x += spacing;
@@ -649,13 +653,17 @@ int PrintString(char *string, int x, int y)
 		else
 		{
 			if (showMap == 0)
-				font = (SPRT *)SetFontTPage(font);
+			{
+				font = (SPRT*)SetFontTPage(font);
+			}
 
 			font = (SPRT *)DrawButton(chr, font, width, y);
 			width += 24;
 
 			if (showMap != 0)
-				font = (SPRT *)SetFontTPage(font);
+			{
+				font = (SPRT*)SetFontTPage(font);
+			}
 		}
 	}
 
