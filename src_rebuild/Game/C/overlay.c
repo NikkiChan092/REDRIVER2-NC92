@@ -745,7 +745,7 @@ void DrawGearDisplay(void)
 		int GearDisplay;
 		int GearSpeed;
 
-		int gGearOverlayXPos = gMapXOffset + 20;
+		int gGearOverlayXPos = gMapXOffset + 25;
 		int gGearOverlayYPos = gMapYOffset + 60;
 
 		// Multiplayer 
@@ -843,7 +843,7 @@ void DrawRPMDisplay(void)
 		int RPMMax;
 		int RPMDisplay;
 
-		int gRPMOverlayXPos = gMapXOffset - 14;
+		int gRPMOverlayXPos = gMapXOffset - 10;
 		int gRPMOverlayYPos = gMapYOffset + 60;
 
 		RPMMax = cp->hd.revs / 3.5;
