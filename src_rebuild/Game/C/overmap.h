@@ -4,6 +4,10 @@
 #define MAP_SIZE_W	64 // default 64
 #define MAP_SIZE_H	60 // default 60
 
+// [A] multiplayer map
+#define MAP_SIZE_WM	50 // default 64
+#define MAP_SIZE_HM  46 // default 60
+
 extern int gMapXOffset;
 extern int gMapYOffset;
 

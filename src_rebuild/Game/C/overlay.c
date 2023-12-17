@@ -1053,7 +1053,15 @@ void DisplayOverlays(void)
 		if (gShowMap == 0)
 		{
 			gMapYOffset = 59;
-			draw_box(gMapYOffset, MAP_SIZE_H);
+
+			if (NumPlayers > 1)
+			{
+				draw_box(gMapYOffset, MAP_SIZE_HM);
+			}
+			else
+			{
+				draw_box(gMapYOffset, MAP_SIZE_H);
+			}
 		}
 	}
 
@@ -1072,7 +1080,16 @@ void DisplayOverlays(void)
 		// recalc pos
 		gOverlayXPos = 16 + emuViewport.x;
 		gOverlayXOppPos = emuViewport.w - 16 - PERCENTAGE_BAR_WIDTH;
-		gMapXOffset = emuViewport.w - 16 - MAP_SIZE_W;
+
+		//[A] changes for multiplayer, but only change  size in big city maps, otherwise keep original. 
+		if (NumPlayers > 1 && gMultiplayerLevels == 0)
+			{
+				gMapXOffset = emuViewport.w - 16 - MAP_SIZE_WM;
+			}
+		else 
+			{
+				gMapXOffset = emuViewport.w - 16 - MAP_SIZE_W;
+			}
 
 		// set up
 		PlayerDamageBar.xpos = gOverlayXPos;

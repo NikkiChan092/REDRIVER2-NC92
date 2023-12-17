@@ -109,9 +109,18 @@ void DrawTargetBlip(VECTOR *pos, u_char r, u_char g, u_char b, int flags)
 	int map_minY, map_maxY;
 	
 	map_minX = gMapXOffset;
-	map_maxX = gMapXOffset + MAP_SIZE_W;
 	map_minY = gMapYOffset;
-	map_maxY = gMapYOffset + MAP_SIZE_H;
+
+	if (NumPlayers > 1 && gMultiplayerLevels == 0)
+	{
+		map_maxX = gMapXOffset + MAP_SIZE_WM;
+		map_maxY = gMapYOffset + MAP_SIZE_HM;
+	}
+	else
+	{
+		map_maxX = gMapXOffset + MAP_SIZE_W;
+		map_maxY = gMapYOffset + MAP_SIZE_H;
+	}
 
 	if (flags & 0x20) 
 	{
@@ -480,8 +489,16 @@ void draw_box(int yPos, int h)
 	linef4->x0 = gMapXOffset;
 	linef4->y0 = yPos;
 
-	linef4->x1 = gMapXOffset + MAP_SIZE_W;
-	linef4->x2 = gMapXOffset + MAP_SIZE_W;
+	if (NumPlayers > 1 && gMultiplayerLevels == 0)
+	{
+		linef4->x1 = gMapXOffset + MAP_SIZE_WM;
+		linef4->x2 = gMapXOffset + MAP_SIZE_WM;
+	}
+	else
+	{
+		linef4->x1 = gMapXOffset + MAP_SIZE_W;
+		linef4->x2 = gMapXOffset + MAP_SIZE_W;
+	}
 
 	linef4->y1 = yPos;
 	linef4->x3 = gMapXOffset;
@@ -954,8 +971,15 @@ void InitOverheadMap(void)
 	int c, d;
 	int tpage;
 
-	if (NumPlayers > 1)
-		gMapYOffset = (SCREEN_H - MAP_SIZE_H) / 2 - 2;
+	if (NumPlayers > 1 && gMultiplayerLevels == 0)
+	{
+		gMapYOffset = (SCREEN_H - MAP_SIZE_HM) / 2 - 2;
+	}
+	else 
+		if (NumPlayers > 1 && gMultiplayerLevels == 1)
+		{
+			gMapYOffset = (SCREEN_H - MAP_SIZE_H) / 2 - 2;
+		}
 	else
 		gMapYOffset = SCREEN_H - MAP_SIZE_H - 15;
 
@@ -1002,8 +1026,17 @@ void FlashOverheadMap(int r, int g, int b)
 
 	prim->x0 = gMapXOffset;
 	prim->y0 = gMapYOffset;
-	prim->w = MAP_SIZE_W;
-	prim->h = MAP_SIZE_H;
+
+	if (NumPlayers > 1)
+	{
+		prim->w = MAP_SIZE_WM;
+		prim->h = MAP_SIZE_HM;
+	}
+	else
+	{
+		prim->w = MAP_SIZE_W;
+		prim->h = MAP_SIZE_H;
+	}
 
 
 	addPrim(current->ot + 1, prim);
@@ -1081,12 +1114,15 @@ void DrawMultiplayerMap(void)
 
 	poly->x0 = xPos;
 	poly->y0 = yPos;
-	poly->x1 = xPos + MAP_SIZE_W;
 	poly->y1 = yPos;
 	poly->x2 = xPos;
-	poly->x3 = xPos + MAP_SIZE_W;
 	poly->y2 = yPos + 64;
 	poly->y3 = yPos + 64;
+
+	// We don't need to edit this one. 
+	poly->x1 = xPos + MAP_SIZE_W;
+	poly->x3 = xPos + MAP_SIZE_W;
+	
 
 	px = MapSegmentPos[0].x;
 	py = MapSegmentPos[0].y;
@@ -1173,17 +1209,41 @@ void DrawOverheadMap(void)
 
 	map_minX = gMapXOffset;
 	map_minY = gMapYOffset;
-	map_maxX = map_minX + MAP_SIZE_W;
-	map_maxY = map_minY + MAP_SIZE_H;
 
-	VECTOR translate = {
-		map_minX + MAP_SIZE_W/2,
-		0,
-		map_minY + MAP_SIZE_H/2
-	};
+	if (NumPlayers > 1 && gMultiplayerLevels == 0)
+	{
+		map_maxX = map_minX + MAP_SIZE_WM;
+		map_maxY = map_minY + MAP_SIZE_HM;
+	}
+	else
+	{
+		map_maxX = map_minX + MAP_SIZE_W;
+		map_maxY = map_minY + MAP_SIZE_H;
+	}
 
-	SetMapPos();	
-	draw_box(map_minY, MAP_SIZE_H);
+	// [A] vector translate change for multiplayer
+	VECTOR translate = { 0,0,0 };
+	if (NumPlayers > 1 && gMultiplayerLevels == 0)
+		{
+			translate.vx = map_minX + MAP_SIZE_WM / 2; 
+			translate.vz = map_minY + MAP_SIZE_HM / 2;
+		}
+	else 
+		{
+			translate.vx = map_minX + MAP_SIZE_W / 2;
+			translate.vz = map_minY + MAP_SIZE_H / 2;
+		}
+	// End translate change 
+
+	SetMapPos();
+	if (NumPlayers > 1)
+	{
+		draw_box(map_minY, MAP_SIZE_HM);
+	}
+	else
+	{
+		draw_box(map_minY, MAP_SIZE_H);
+	}
 
 	// flash the overhead map
 	if (player_position_known > 0) 
@@ -1521,8 +1581,18 @@ void DrawOverheadMap(void)
 	current->primptr += sizeof(POLY_FT3);
 
 	clipped_size.x = map_minX + 1;
-	clipped_size.w = MAP_SIZE_W - 1;
-	clipped_size.h = MAP_SIZE_H;
+
+	if (NumPlayers > 1)
+	{
+		clipped_size.w = MAP_SIZE_WM - 1;
+		clipped_size.h = MAP_SIZE_HM;
+	}
+	else
+	{
+		clipped_size.w = MAP_SIZE_W - 1;
+		clipped_size.h = MAP_SIZE_H;
+	}
+
 	clipped_size.y = (current->draw.clip.y & 256) + map_minY;
 
 	drarea = (DR_AREA*)current->primptr;
@@ -1986,8 +2056,16 @@ void WorldToOverheadMapPositions(VECTOR *pGlobalPosition, VECTOR *pOverheadMapPo
 
 	if (outputRelative == 0)
 	{
-		tempMatrix.t[0] = gMapXOffset + MAP_SIZE_W/2;
-		tempMatrix.t[2] = gMapYOffset + MAP_SIZE_H/2;
+		if (NumPlayers > 1)
+		{
+			tempMatrix.t[0] = gMapXOffset + MAP_SIZE_WM / 2;
+			tempMatrix.t[2] = gMapYOffset + MAP_SIZE_HM / 2;
+		}
+		else
+		{
+			tempMatrix.t[0] = gMapXOffset + MAP_SIZE_W / 2;
+			tempMatrix.t[2] = gMapYOffset + MAP_SIZE_H / 2;
+		}
 	}
 	else
 	{
