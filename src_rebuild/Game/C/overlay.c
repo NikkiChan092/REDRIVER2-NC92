@@ -749,8 +749,8 @@ void DrawGearDisplay(void)
 		int gGearOverlayYPos = gMapYOffset + 60;
 
 		// Multiplayer 
-		int gGearOverlayXPos2 = gMapXOffset - 13;
-		int gGearOverlayYPos2 = gMapYOffset - 16;
+		int gGearOverlayXPos2 = gMapXOffset + 0;
+		int gGearOverlayYPos2 = gMapYOffset - 10;
 
 		GearDisplay = cp->hd.gear + 1;
 		GearSpeed = cp->hd.wheel_speed;
@@ -796,10 +796,10 @@ void DrawGearDisplay2(void)
 		int P2_GearDisplay;
 		int P2_GearSpeed;
 
-		int gGearOverlay2XPos = gMapXOffset - 13;
+		int gGearOverlay2XPos = gMapXOffset + 25;
 		int gGearOverlay2YPos = gMapYOffset + 134;
 
-		int gGearOverlay2XPos2 = gMapXOffset - 13;
+		int gGearOverlay2XPos2 = gMapXOffset + 25;
 		int gGearOverlay2YPos2 = gMapYOffset + 160;
 
 		P2_GearDisplay = cp->hd.gear + 1;
@@ -809,12 +809,12 @@ void DrawGearDisplay2(void)
 
 
 		if (P2_GearSpeed < 0)
-			sprintf(P2_gearString, "Gear:R", P2gear);
+			sprintf(P2_gearString, "R:Gear", P2gear);
 		else
 			if (P2_GearSpeed == 0)
-				sprintf(P2_gearString, "Gear:N", P2gear);
+				sprintf(P2_gearString, "N:Gear", P2gear);
 			else
-				sprintf(P2_gearString, "Gear:%d", P2gear);
+				sprintf(P2_gearString, "%d:Gear", P2gear);
 
 		SetTextScale(2250, 1);
 		SetTextColour(128, 128, 64);
@@ -888,8 +888,8 @@ void DrawSpeedometer(void)
 		int gSpeedoOverlayYPos = gMapYOffset + 60; // higher moves down
 
 		// Multiplayer 
-		int gSpeedoOverlayXPos2 = gMapXOffset + 7;
-		int gSpeedoOverlayYPos2 = gMapYOffset - 16;
+		int gSpeedoOverlayXPos2 = gMapXOffset + 64;
+		int gSpeedoOverlayYPos2 = gMapYOffset - 10;
 
 		P1_WheelSpeed = cp->hd.wheel_speed;
 
@@ -937,10 +937,10 @@ void DrawSpeedometer2(void)
 		char P2SpeedoString[32];
 		int P2_WheelSpeed;
 
-		int gSpeedoOverlayXPos = gMapXOffset + 7;
+		int gSpeedoOverlayXPos = gMapXOffset + 64;
 		int gSpeedoOverlayYPos = gMapYOffset + 134;
 
-		int gSpeedoOverlayXPos2 = gMapXOffset + 7;
+		int gSpeedoOverlayXPos2 = gMapXOffset + 64;
 		int gSpeedoOverlayYPos2 = gMapYOffset + 160;
 
 		P2_WheelSpeed = cp->hd.wheel_speed;
