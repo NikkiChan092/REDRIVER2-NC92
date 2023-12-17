@@ -816,12 +816,15 @@ void DrawGearDisplay2(void)
 			else
 				sprintf(P2_gearString, "Gear:%d", P2gear);
 
+		SetTextScale(2250, 1);
 		SetTextColour(128, 128, 64);
 
 		if (NumPlayers == 2 && gMultiplayerLevels == 0)
-			PrintString(P2_gearString, gGearOverlay2XPos2, gGearOverlay2YPos2);
+			PrintStringRightAligned(P2_gearString, gGearOverlay2XPos2, gGearOverlay2YPos2);
 		else
-			PrintString(P2_gearString, gGearOverlay2XPos, gGearOverlay2YPos);
+			PrintStringRightAligned(P2_gearString, gGearOverlay2XPos, gGearOverlay2YPos);
+
+		ResetTextScale();
 	}
 }
 
@@ -909,7 +912,7 @@ void DrawSpeedometer(void)
 			SetTextColour(255, 255, 255);
 
 		if (NumPlayers == 2)
-			PrintString(SpeedoString, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2); // toDo, fix later for MP
+			PrintStringRightAligned(SpeedoString, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2); // toDo, fix later for MP
 		else
 			PrintStringRightAligned(SpeedoString, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
 
@@ -952,6 +955,7 @@ void DrawSpeedometer2(void)
 			sprintf(P2SpeedoString, "%d:Mph", mph);
 
 		int P2speedoFlash = ((CameraCnt + 1) % 16) * 16; // flash speed for the speedometer
+		SetTextScale(2250, 1);
 
 		if (FIXEDH(P2_WheelSpeed) > gP2SpeedingData && gPlayerImmune == 0)
 			SetTextColour(255, P2speedoFlash, P2speedoFlash); // Red and white
@@ -959,9 +963,11 @@ void DrawSpeedometer2(void)
 			SetTextColour(255, 255, 255);
 
 		if (NumPlayers == 2 && gMultiplayerLevels == 0)
-			PrintString(P2SpeedoString, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2);
+			PrintStringRightAligned(P2SpeedoString, gSpeedoOverlayXPos2, gSpeedoOverlayYPos2);
 		else
-			PrintString(P2SpeedoString, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
+			PrintStringRightAligned(P2SpeedoString, gSpeedoOverlayXPos, gSpeedoOverlayYPos);
+
+		ResetTextScale();
 	}
 }
 
