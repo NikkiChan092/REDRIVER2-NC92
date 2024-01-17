@@ -1093,7 +1093,7 @@ void SetUpEvents(int full)
 		missionTrain[1].engine = missionTrain[0].engine;
 
 		// add trains
-		while (n < count-1)
+		while (n < count)
 		{
 			// randomize carriage count
 			if (n != 0)
@@ -4032,7 +4032,7 @@ void MultiCarEvent(MS_TARGET* target)
 		ev->position.vx = mcd->x;
 		ev->position.vz = mcd->z;
 		
-		ev->position.vy = -312;
+		ev->position.vy = -312; // MapHeight may not be available due to region is not yet loaded
 	
 		ev->rotation = mcd->rot;
 
