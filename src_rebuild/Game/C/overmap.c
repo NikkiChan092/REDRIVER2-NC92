@@ -16,6 +16,7 @@
 #include "felony.h"
 #include "pad.h"
 #include "ASM/rnc_2.h"
+#include "main.h"
 
 struct MAPTEX
 {
@@ -90,7 +91,6 @@ static int gUseRotatedMap = 0;
 
 int gMapXOffset = 640;
 int gMapYOffset = 480;
-int gMapYOffset2 = 480;
 
 int gColorCodedCopIndicators = 0;
 
@@ -465,8 +465,16 @@ void SetMapPos(void)
 	scale = overlaidmaps[GameLevel].scale;
 
 	// [D] [T] 
-	x_map = overlaidmaps[GameLevel].x_offset + player[0].pos[0] / scale + 1;
-	y_map = overlaidmaps[GameLevel].y_offset - player[0].pos[2] / scale + 1;
+	if (CurrentPlayerView == 0) // Player 1
+	{
+		x_map = overlaidmaps[GameLevel].x_offset + player[0].pos[0] / scale + 1;
+		y_map = overlaidmaps[GameLevel].y_offset - player[0].pos[2] / scale + 1;
+	}
+	else if (CurrentPlayerView == 1) // Player 2
+	{
+		x_map = overlaidmaps[GameLevel].x_offset + player[1].pos[0] / scale + 1;
+		y_map = overlaidmaps[GameLevel].y_offset - player[1].pos[2] / scale + 1;
+	}
 }
 
 // [D] [T]
@@ -478,7 +486,6 @@ void draw_box(int yPos, int h)
 	linef4->r0 = 0;
 	linef4->g0 = 0;
 	linef4->b0 = 128; // default 128
-
 	linef4->x0 = gMapXOffset;
 	linef4->y0 = yPos;
 
@@ -507,13 +514,30 @@ void draw_box(int yPos, int h)
 
 	linef2->r0 = 0;
 	linef2->g0 = 0;
-	linef2->b0 = 128; // default 128
-
+	linef2->b0 = 128; // default 128 
 	linef2->x0 = gMapXOffset;
 	linef2->y0 = yPos;
 
 	linef2->x1 = gMapXOffset;
 	linef2->y1 = yPos + h;
+
+	if (NumPlayers > 1 && gMultiplayerLevels == 0)
+	{
+		if (CurrentPlayerView == 0) // Player 1
+		{
+			linef4->r0 = 128;
+			linef4->b0 = 0; // default 128
+			linef2->r0 = 128;
+			linef2->b0 = 0; // default 128 
+		}
+		else if (CurrentPlayerView == 1) // Player 2
+		{
+			linef4->g0 = 128;
+			linef4->b0 = 0; // default 128
+			linef2->g0 = 128;
+			linef2->b0 = 0; // default 128 
+		}
+	}
 
 	addPrim(current->ot, linef2);
 	current->primptr += sizeof(LINE_F2);
@@ -1003,39 +1027,6 @@ void InitOverheadMap(void)
 }
 
 // [D] [T]
-void InitOverheadMap2(void)
-{
-	int c, d;
-	int tpage;
-
-	if (gMultiplayerLevels)
-	{
-		InitMultiplayerMap();
-		return;
-	}
-
-	SetMapPos();
-	tilehnum = overlaidmaps[GameLevel].width / 32;
-
-	tpage = 0;
-
-	for (c = 0; c < 4; c++)
-	{
-		for (d = 0; d < 4; d++)
-		{
-			maptile[d][c] = tpage;
-
-			LoadMapTile(tpage, (x_map >> 5) + d, (y_map >> 5) + c);
-			tpage++;
-		}
-	}
-
-	old_x_mod = x_map & 0x1f;
-	old_y_mod = y_map & 0x1f;
-}
-
-
-// [D] [T]
 void FlashOverheadMap(int r, int g, int b)
 {
 	TILE *prim;
@@ -1085,7 +1076,6 @@ void FlashOverheadMap(int r, int g, int b)
 
 	current->primptr += sizeof(POLY_FT3);
 }
-
 
 // [D] [T]
 void DrawMultiplayerMap(void)
@@ -1229,6 +1219,18 @@ void DrawOverheadMap(void)
 		return;
 	}
 	
+	if (NumPlayers > 1 && gMultiplayerLevels == 0)
+	{
+		if (CurrentPlayerView == 0) // Player 1
+		{
+			gMapYOffset = 59;
+		}
+		else if (CurrentPlayerView == 1) // Player 2
+		{
+			gMapYOffset = 181;
+		}
+	}
+
 	//if (NumPlayers > 1)
 		//return;
 
@@ -1311,15 +1313,27 @@ void DrawOverheadMap(void)
 
 	if (NumPlayers == 2 && gMultiplayerLevels == 0)
 	{
-			pl = &player[0];
-			pl2 = &player[1];
+		pl->pos[0];
+		pl2->pos[2];
 
-			pl->pos[0];
-			pl2->pos[2];
+			if (CurrentPlayerView == 0) // Player 1
+			{
+				pl = &player[0];
+				pl2 = &player[1];
 
-			// [D] [T] Give players the MP indicators. 
-			DrawPlayerDot((VECTOR*)pl->pos, -pl->dir, 255, 0, 0, 0x1);
-			DrawPlayerDot((VECTOR*)pl2->pos, -pl2->dir, 0, 255, 0, 0x1);
+				// [D] [T] Give players the MP indicators. 
+				WorldToOverheadMapPositions((VECTOR*)player->pos, &vec, 1, 0, 0); // the playerDot
+				DrawPlayerDot((VECTOR*)pl2->pos, -pl2->dir, 0, 255, 0, 0x1);
+			}
+			else if (CurrentPlayerView == 1) // Player 2
+			{
+				pl = &player[1];
+				pl2 = &player[0];
+
+				// [D] [T] Give players the MP indicators. 
+				WorldToOverheadMapPositions((VECTOR*)player->pos, &vec, 1, 0, 0); // the playerDot
+				DrawPlayerDot((VECTOR*)pl->pos, -pl->dir, 255, 0, 0, 0x1);
+			}
 	}
 	else
 	{
@@ -1616,427 +1630,6 @@ void DrawOverheadMap(void)
 }
 
 // [D] [T]
-void DrawOverheadMap2(void)
-{
-	u_char tmp;
-	short* playerFelony;
-	TILE_1* tile1;
-	POLY_F4* sptb;
-	POLY_FT4* spt;
-	POLY_FT3* null;
-	CAR_DATA* cp;
-	DR_AREA* drarea;
-	int intens;
-
-	SVECTOR MapMesh[5][5];
-	VECTOR MapMeshO[5][5];
-	MAPTEX MapTex[4];
-
-	SVECTOR direction;
-	RECT16 clipped_size;
-	VECTOR vec;
-	VECTOR vec2;
-	long flag;
-	int i, j;
-	int tw, th;
-	int x_mod, y_mod;
-	int MeshWidth, MeshHeight;
-	int map_minX, map_maxX;
-	int map_minY, map_maxY;
-	int scale;
-
-	PLAYER* pl;
-	PLAYER* pl2;
-
-	pl = &player[0];
-	pl2 = &player[1];
-
-	pl->pos[0];
-	pl2->pos[2];
-
-	static int flashtimer = 0;
-	static u_char ptab[] = {
-		255, 240, 170, 120,
-		80, 55, 38, 23,
-		13,  10,  0,  0,
-		0,  0,  0,  0,
-	};
-
-	static u_char ptab2[] = {
-		255, 255, 240, 170,
-		120, 80, 55, 38,
-		23, 13,  10,  0,
-		0
-	};
-
-	if (MissionHeader->region != 0)
-	{
-		DrawMultiplayerMap();
-		return;
-	}
-
-	//if (NumPlayers > 1)
-		//return;
-
-	map_minX = gMapXOffset;
-	map_minY = gMapYOffset2;
-	map_maxX = map_minX + MAP_SIZE_WM;
-	map_maxY = map_minY + MAP_SIZE_HM;
-
-	// [A] vector translate change for multiplayer
-	VECTOR translate = { 0,0,0 };
-	translate.vx = map_minX + MAP_SIZE_WM / 2;
-	translate.vz = map_minY + MAP_SIZE_HM / 2;
-	// End translate change 
-
-	SetMapPos();
-	draw_box(map_minY, MAP_SIZE_HM);
-
-	// flash the overhead map
-	if (player_position_known > 0)
-	{
-		if (player[1].playerCarId < 0)
-			playerFelony = &pedestrianFelony;
-		else
-			playerFelony = &car_data[player[1].playerCarId].felonyRating;
-
-		if (*playerFelony > FELONY_PURSUIT_MIN_VALUE)
-			FlashOverheadMap(ptab[CameraCnt & 0xf], 0, ptab[CameraCnt + 8U & 0xf]);
-	}
-	else
-	{
-		if (player_position_known == -1)
-		{
-			if (flashtimer == 0)
-			{
-				if (player[1].playerCarId < 0)
-					playerFelony = &pedestrianFelony;
-				else
-					playerFelony = &car_data[player[1].playerCarId].felonyRating;
-
-				if (*playerFelony > FELONY_PURSUIT_MIN_VALUE)
-					flashtimer = 48;
-			}
-		}
-
-		if (flashtimer)
-		{
-			flashtimer--;
-			intens = -flashtimer;
-
-			intens = ptab2[intens + 47 >> 2] + ptab2[intens + 48 >> 2] + ptab2[intens + 49 >> 2] + ptab2[intens + 50 >> 2] >> 2;
-			FlashOverheadMap(intens, intens, intens);
-		}
-	}
-
-	SetFullscreenDrawing(1);
-
-	if (NumPlayers == 2 && gMultiplayerLevels == 0)
-	{
-		pl = &player[0];
-		pl2 = &player[1];
-
-		pl->pos[0];
-		pl2->pos[2];
-
-		// [D] [T] Give players the MP indicators. 
-		DrawPlayerDot((VECTOR*)pl->pos, -pl->dir, 255, 0, 0, 0x1);
-		DrawPlayerDot((VECTOR*)pl2->pos, -pl2->dir, 0, 255, 0, 0x1);
-	}
-	else
-	{
-		WorldToOverheadMapPositions((VECTOR*)pl2->pos, &vec, 1, 0, 0); // the playerDot
-	}
-
-	// draw map center
-	if (vec.vx > map_minX && vec.vx < map_maxX &&
-		vec.vz > map_minY && vec.vz < map_maxY)
-	{
-		tile1 = (TILE_1*)current->primptr;
-		setTile1(tile1);
-
-		tile1->r0 = 255;
-		tile1->g0 = 255;
-		tile1->b0 = 255;
-
-		tile1->x0 = vec.vx;
-		tile1->y0 = vec.vz;
-
-		addPrim(current->ot, tile1);
-		current->primptr += sizeof(TILE_1);
-	}
-
-	DrawTargetBlip((VECTOR*)pl2->pos, 64, 64, 64, 3); // the playerDot shadow
-	DrawCompass(); // Compass should now appear only in single player
-	
-
-	DrawOverheadTargets();
-
-	// draw cop sight
-	cp = car_data;
-	do {
-		if (cp->controlType == CONTROL_TYPE_PURSUER_AI && cp->ai.p.dying == 0 || (cp->controlFlags & CONTROL_FLAG_COP))
-			DrawSightCone(cp, &copSightData, (VECTOR*)cp->hd.where.t, cp->hd.direction, cp->controlType == CONTROL_TYPE_PURSUER_AI);
-
-		cp++;
-	} while (cp <= &car_data[MAX_CARS]);
-
-	x_mod = x_map & 31;
-	y_mod = y_map & 31;
-
-	// next code loads map tiles depending on player position changes
-
-	// X axis
-	if (x_mod < 16 && old_x_mod > 16)
-	{
-		// left
-		for (i = 0; i < 4; i++)
-		{
-			tmp = maptile[0][i];
-
-			maptile[0][i] = maptile[1][i];
-			maptile[1][i] = maptile[2][i];
-			maptile[2][i] = maptile[3][i];
-			maptile[3][i] = tmp;
-
-			LoadMapTile(tmp, (x_map >> 5) + 3, (y_map >> 5) + i);
-		}
-	}
-
-	if (x_mod > 16 && old_x_mod < 16)
-	{
-		// right
-		for (i = 0; i < 4; i++)
-		{
-			tmp = maptile[3][i];
-
-			maptile[3][i] = maptile[2][i];
-			maptile[2][i] = maptile[1][i];
-			maptile[1][i] = maptile[0][i];
-			maptile[0][i] = tmp;
-
-			LoadMapTile(tmp, (x_map >> 5), (y_map >> 5) + i);
-		}
-	}
-
-	// Z axis
-	if (y_mod < 16 && old_y_mod > 16)
-	{
-		// down
-		for (i = 0; i < 4; i++)
-		{
-			tmp = maptile[i][0];
-
-			maptile[i][0] = maptile[i][1];
-			maptile[i][1] = maptile[i][2];
-			maptile[i][2] = maptile[i][3];
-			maptile[i][3] = tmp;
-
-			LoadMapTile(tmp, (x_map >> 5) + i, (y_map >> 5) + 3);
-		}
-	}
-
-	if (y_mod > 16 && old_y_mod < 16)
-	{
-		// up
-		for (i = 0; i < 4; i++)
-		{
-			tmp = maptile[i][3];
-
-			maptile[i][3] = maptile[i][2];
-			maptile[i][2] = maptile[i][1];
-			maptile[i][1] = maptile[i][0];
-			maptile[i][0] = tmp;
-
-			LoadMapTile(tmp, (x_map >> 5) + i, (y_map >> 5));
-		}
-	}
-
-	old_x_mod = x_mod;
-	old_y_mod = y_mod;
-
-	// make grid coordinates
-	for (i = 0; i < 5; i++)
-	{
-		MapMesh[0][i].vx = -44;
-		MapMesh[i][0].vz = -44;
-
-		MapMesh[1][i].vx = -x_mod - 16;
-		MapMesh[i][1].vz = -y_mod - 16;
-
-		MapMesh[2][i].vx = -x_mod + 16;
-		MapMesh[i][2].vz = -y_mod + 16;
-
-		MapMesh[3][i].vx = -x_mod + 48;
-		MapMesh[i][3].vz = -y_mod + 48;
-
-		MapMesh[4][i].vx = 44;
-		MapMesh[i][4].vz = 44;
-	}
-
-	MapTex[1].w = MapTex[2].w = tile_size;
-	MapTex[1].u = MapTex[2].u = MapTex[3].u = 0;
-
-	MapTex[1].h = MapTex[2].h = tile_size;
-	MapTex[1].v = MapTex[2].v = MapTex[3].v = 0;
-
-	MapTex[0].u = 32 - ABS(MapMesh[0][0].vx - MapMesh[1][0].vx);
-	MapTex[0].w = ABS(MapMesh[0][0].vx - MapMesh[1][0].vx);
-
-	MapTex[3].w = ABS(MapMesh[3][0].vx - MapMesh[4][0].vx);
-	MapTex[0].v = 32 - ABS(MapMesh[0][0].vz - MapMesh[0][1].vz);
-
-	MapTex[0].h = ABS(MapMesh[0][0].vz - MapMesh[0][1].vz);
-	MapTex[3].h = ABS(MapMesh[0][3].vz - MapMesh[0][4].vz);
-
-	direction.vx = 0;
-	direction.vz = 0;
-	direction.vy = player[1].dir & 0xfff;
-
-
-	InitMatrix(map_matrix);
-	_RotMatrixY(&map_matrix, player[1].dir & 0xfff);
-
-	gte_SetRotMatrix(&map_matrix);
-	gte_SetTransVector(&translate);
-
-
-
-	MeshWidth = x_mod ? 4 : 3;
-	MeshHeight = y_mod ? 4 : 3;
-
-	// transform the map mesh
-	for (i = 0; i <= MeshWidth; i++)
-	{
-		for (j = 0; j <= MeshHeight; j++)
-		{
-			RotTrans(&MapMesh[i][j], &MapMeshO[i][j], &flag);
-		}
-	}
-
-	// draw map mesh booooi
-	for (i = 0; i < MeshHeight; i++)
-	{
-		for (j = 0; j < MeshWidth; j++)
-		{
-			int tile, px, py;
-
-			tile = maptile[j][i];
-			tw = MapTex[j].w - 1;
-			th = MapTex[i].h - 1;
-#ifndef PSX
-			// make map fully detailed when filtering is not available
-			if (!g_cfg_bilinearFiltering)
-			{
-				tw += 1;
-				th += 1;
-			}
-#endif
-
-			spt = (POLY_FT4*)current->primptr;
-
-			setPolyFT4(spt);
-			setSemiTrans(spt, 1);
-
-			if (gTimeOfDay == TIME_NIGHT)
-				spt->r0 = spt->g0 = spt->b0 = 50;
-			else
-				spt->r0 = spt->g0 = spt->b0 = 100;
-
-			spt->clut = MapClut;
-			spt->tpage = MapTPage;
-
-			spt->x0 = MapMeshO[j][i].vx;
-			spt->y0 = MapMeshO[j][i].vz;
-
-			spt->x1 = MapMeshO[j + 1][i].vx;
-			spt->y1 = MapMeshO[j + 1][i].vz;
-
-			spt->x2 = MapMeshO[j][i + 1].vx;
-			spt->y2 = MapMeshO[j][i + 1].vz;
-
-			spt->x3 = MapMeshO[j + 1][i + 1].vx;
-			spt->y3 = MapMeshO[j + 1][i + 1].vz;
-
-			px = MapSegmentPos[tile].x;
-			py = MapSegmentPos[tile].y;
-
-			spt->u0 = MIN(255, MapTex[j].u + px);
-			spt->v0 = MIN(255, MapTex[i].v + py);
-
-			spt->u1 = MIN(255, MapTex[j].u + px + tw);
-			spt->v1 = MIN(255, MapTex[i].v + py);
-
-			spt->u2 = MIN(255, MapTex[j].u + px);
-			spt->v2 = MIN(255, MapTex[i].v + py + th);
-
-			spt->u3 = MIN(255, MapTex[j].u + px + tw);
-			spt->v3 = MIN(255, MapTex[i].v + py + th);
-
-			addPrim(current->ot + 1, spt);
-
-			current->primptr += sizeof(POLY_FT4);
-		}
-	}
-
-	sptb = (POLY_F4*)current->primptr;
-
-	setPolyF4(sptb);
-	setSemiTrans(sptb, 1);
-
-	sptb->r0 = 60;
-	sptb->g0 = 60;
-	sptb->b0 = 60;
-
-	sptb->y0 = map_minY;
-	sptb->y1 = map_minY;
-	sptb->x0 = map_minX;
-	sptb->x1 = map_maxX;
-	sptb->x2 = map_minX;
-	sptb->y2 = map_maxY;
-	sptb->x3 = map_maxX;
-	sptb->y3 = map_maxY;
-
-	addPrim(current->ot + 1, sptb);
-	current->primptr += sizeof(POLY_F4);
-
-	null = (POLY_FT3*)current->primptr;
-	setPolyFT3(null);
-
-	null->x0 = -1;
-	null->y0 = -1;
-	null->x1 = -1;
-	null->y1 = -1;
-	null->x2 = -1;
-	null->y2 = -1;
-	null->tpage = 0;
-
-	addPrim(current->ot + 1, null);
-	current->primptr += sizeof(POLY_FT3);
-
-	clipped_size.x = map_minX + 1;
-
-	if (NumPlayers > 1)
-	{
-		clipped_size.w = MAP_SIZE_WM - 1;
-		clipped_size.h = MAP_SIZE_HM;
-	}
-	else
-	{
-		clipped_size.w = MAP_SIZE_W - 1;
-		clipped_size.h = MAP_SIZE_H;
-	}
-
-	clipped_size.y = (current->draw.clip.y & 256) + map_minY;
-
-	drarea = (DR_AREA*)current->primptr;
-
-	SetDrawArea(drarea, &clipped_size);
-	addPrim(current->ot + 1, drarea);
-	current->primptr += sizeof(DR_AREA);
-}
-
-// [D] [T]
 void SetFullscreenMapMatrix(void)
 {
 	VECTOR translate = { 160, 0, 128 };
@@ -2087,12 +1680,6 @@ void DrawFullscreenMap(void)
 	}
 
 	SetFullscreenMapMatrix();
-
-	//[A] *fix* for full screen drawing in multiplayer. 
-	if (NumPlayers > 1)
-	{
-		SetFullscreenDrawing(1);
-	}
 
 	tw = tile_size - 1;
 	th = tile_size - 1;

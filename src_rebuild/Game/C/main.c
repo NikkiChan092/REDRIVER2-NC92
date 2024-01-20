@@ -2162,6 +2162,7 @@ void UpdatePlayerInformation(void)
 			if (gInvincibleCar != 0)
 			{
 				cp->totalDamage = 0;
+				if (gInvincibleCar == 2)
 				ClearMem((char*)cp->ap.damage, sizeof(cp->ap.damage));
 			}
 

@@ -93,7 +93,6 @@ void InitOverlays(void)
 	gOverlayXOppPos = 208;
 	gMapXOffset = 249;
 	gMapYOffset = 181;
-	gMapYOffset2 = 181;
 
 	InitPercentageBar(&PlayerDamageBar, MaxPlayerDamage[0], playerDamageColour, G_LTXT(GTXT_Damage));
 
@@ -143,7 +142,6 @@ void InitOverlays(void)
 	ProxyBar.active = 0;
 
 	InitOverheadMap();
-	InitOverheadMap2();
 
 	if (GameType == GAME_CAPTURETHEFLAG)
 	{
@@ -1000,7 +998,10 @@ void DisplayOverlays(void)
 	if (NumPlayers == 2 && gShowMap == 0)
 	{
 		DrawPercentageBar(&DamageBar);
-		DrawOverheadMap2();
+		if (gMultiplayerLevels == 0)
+		{
+			DrawOverheadMap();
+		}
 	}
 
 	if (gShowMap == 0)
@@ -1055,8 +1056,6 @@ void DisplayOverlays(void)
 			return;
 		if (gShowMap == 0)
 		{
-			gMapYOffset = 59;
-
 			if (NumPlayers > 1)
 			{
 				draw_box(gMapYOffset, MAP_SIZE_HM);
