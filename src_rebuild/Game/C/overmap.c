@@ -416,7 +416,7 @@ void ProcessOverlayLump(char *lump_ptr, int lump_size)
 	D_MALLOC_END();
 
 	// load CLUT
-	LoadImage(&mapclutpos, (u_long *)(MapBitMaps + 512));
+	LoadImage(&mapclutpos, (u_long*)(MapBitMaps + 512));
 	DrawSync(0);
 }
 
@@ -976,7 +976,7 @@ void InitMultiplayerMap(void)
 		rect.w = 16;
 		rect.h = 64;
 
-		LoadImage(&rect, (u_long *)MapBitMaps);
+		LoadImage(&rect, (u_long*)MapBitMaps);
 
 		DrawSync(0);
 	}
