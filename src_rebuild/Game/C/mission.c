@@ -3509,6 +3509,7 @@ void CompleteAllActiveTargets(int player)
 		if (pTarget->type >= Target_Point && 
 			pTarget->type <= Target_Event && (pTarget->s.target_flags & flag1))
 		{
+			pTarget->s.target_flags &= ~flag1;
 			pTarget->s.target_flags |= flag2;
 		}
 	}
